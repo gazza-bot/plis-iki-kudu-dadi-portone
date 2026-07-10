@@ -5,7 +5,7 @@ export default function Hero() {
 function MyPhoto() {
   return (
     <div>
-      <img src="" alt="My Great Photo" />
+      <img className="size-1/6" src="/src/assets/PhotoAing.JPG" alt="My Great Photo" />
     </div>
   );
 }
