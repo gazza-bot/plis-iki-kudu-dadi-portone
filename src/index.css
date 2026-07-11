@@ -1,6 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&display=swap');
 @import "tailwindcss";
 
+@layer utilities {
+  @keyframes bounce-kalem {
+    0%, 100% {
+      transform: translateY(-5%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  .animate-bounce-kalem {
+    animation: bounce-kalem 1.5s infinite;
+  }
+}
+
 @theme{
     --font-heading: "Bebas Neue", sans-serif;
     --font-p: "Instrument Serif", serif;

@@ -26,6 +26,7 @@ interface GitHubData {
   followers: number;
   following: number;
   avatar_url: string;
+  name: string;
 }
 
 interface GithubStatsProps {
@@ -62,9 +63,6 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
 
   if (loading) {
     return (
-      // <div className="flex justify-center items-center p-8 bg-gray-50 rounded-xl border border-gray-200">
-      //   <p className="text-gray-500 animate-pulse">Memuat data GitHub...</p>
-      // </div>
       <SkeletonStats/>
     );
   }
@@ -78,26 +76,26 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
   }
 
   return (
-    <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+    <div className="w-full p-6 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
       {/* Bagian Header: Info Repositori */}
       <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
         {profile?.avatar_url && (
           <img
             src={profile.avatar_url}
             alt={`Avatar ${username}`}
-            className="w-20 h-20 rounded-full border-4 border-gray-50"
+            className="size-10 md:size-20 rounded-full border-4 border-blue-main"
           />
         )}
         <div>
-          <h3 className="text-2xl font-bold text-gray-800">@{username}</h3>
+          <h3 className="text-xl md:text-2xl font-bold text-gray-800">@{username} | {profile?.name}</h3>
           <div className="flex gap-4 mt-2 text-sm text-gray-600">
-            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-[80px]">
+            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
               <span className="font-bold text-white">
                 {profile?.public_repos}
               </span>
               <span className="text-white-bg">Repositori</span>
             </div>
-            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-[80px]">
+            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
               <span className="font-bold text-white">{profile?.followers}</span>
               <span className="text-white-bg">Followers</span>
             </div>
@@ -110,7 +108,7 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
         <h4 className="text-sm font-semibold text-blue-main mb-4">
           Grafik Kontribusi
         </h4>
-        <div className="min-w-[750px] flex justify-center">
+        <div className="min-w-full flex justify-center">
           <GitHubCalendar
             username={username}
             colorScheme="light"
