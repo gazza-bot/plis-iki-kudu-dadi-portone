@@ -1,0 +1,155 @@
+import React, { useEffect, useState } from "react";
+import { GitHubCalendar } from "react-github-calendar";
+// Mendefinisikan tipe data yang akan kita ambil dari API
+
+const customTheme = {
+  // Mode Terang: dari abu-abu muda ke biru terang (#2185D5)
+  light: [
+    "#ebedf0", // Level 0: Kosong (bawaan GitHub)
+    "#bce0fd", // Level 1: Sedikit aktif (Biru sangat pudar)
+    "#89c6fa", // Level 2: Lumayan aktif (Biru muda)
+    "#56a9f6", // Level 3: Aktif (Biru sedang)
+    "#2185D5", // Level 4: Sangat aktif (Warna utamamu)
+  ],
+
+  // Mode Gelap: dari abu-abu gelap ke biru terang (#2185D5)
+  dark: [
+    "#161b22", // Level 0: Kosong (bawaan GitHub dark mode)
+    "#0d3555", // Level 1: Sedikit aktif (Biru sangat gelap)
+    "#144f80", // Level 2: Lumayan aktif (Biru gelap)
+    "#1a6aab", // Level 3: Aktif (Biru sedang gelap)
+    "#2185D5", // Level 4: Sangat aktif (Warna utamamu)
+  ],
+};
+interface GitHubData {
+  public_repos: number;
+  followers: number;
+  following: number;
+  avatar_url: string;
+}
+
+interface GithubStatsProps {
+  username: string; // Username GitHub kamu
+}
+
+const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
+  const [profile, setProfile] = useState<GitHubData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchGithubData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.github.com/users/${username}`,
+        );
+
+        if (!response.ok) {
+          throw new Error("Gagal mengambil data dari GitHub");
+        }
+
+        const data: GitHubData = await response.json();
+        setProfile(data);
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchGithubData();
+  }, [username]);
+
+  if (loading) {
+    return (
+      // <div className="flex justify-center items-center p-8 bg-gray-50 rounded-xl border border-gray-200">
+      //   <p className="text-gray-500 animate-pulse">Memuat data GitHub...</p>
+      // </div>
+      <SkeletonStats/>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-200">
+        <p>Error: {error}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
+      {/* Bagian Header: Info Repositori */}
+      <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
+        {profile?.avatar_url && (
+          <img
+            src={profile.avatar_url}
+            alt={`Avatar ${username}`}
+            className="w-20 h-20 rounded-full border-4 border-gray-50"
+          />
+        )}
+        <div>
+          <h3 className="text-2xl font-bold text-gray-800">@{username}</h3>
+          <div className="flex gap-4 mt-2 text-sm text-gray-600">
+            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-[80px]">
+              <span className="font-bold text-white">
+                {profile?.public_repos}
+              </span>
+              <span className="text-white-bg">Repositori</span>
+            </div>
+            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-[80px]">
+              <span className="font-bold text-white">{profile?.followers}</span>
+              <span className="text-white-bg">Followers</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bagian Kalender Kontribusi */}
+      <div className="overflow-x-auto pb-4">
+        <h4 className="text-sm font-semibold text-blue-main mb-4">
+          Grafik Kontribusi
+        </h4>
+        <div className="min-w-[750px] flex justify-center">
+          <GitHubCalendar
+            username={username}
+            colorScheme="light"
+            blockSize={12}
+            blockMargin={4}
+            fontSize={12}
+            theme={customTheme}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const SkeletonStats: React.FC = () => {
+  return (
+    <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 animate-pulse">
+      
+      <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
+        
+        <div className="w-20 h-20 rounded-full bg-gray-200 border-4 border-gray-50 shrink-0"></div>
+        
+        <div className="flex flex-col gap-3">
+          <div className="h-7 w-40 bg-gray-200 rounded-md"></div>
+          
+          <div className="flex gap-4">
+            <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
+            <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
+          </div>
+        </div>
+      </div>
+
+      <div className="overflow-hidden pb-4">
+        <div className="h-4 w-32 bg-gray-200 rounded-md mb-6"></div>
+        
+        <div className="w-full h-35 bg-gray-100 rounded-xl"></div>
+      </div>
+
+    </div>
+  );
+};
+export default GithubStats;
