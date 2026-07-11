@@ -3,7 +3,7 @@ import GithubStats from "./GithubStats.tsx";
 export default function Hero() {
   return (
     // 1. Kurangi padding di mobile (p-8), p-16 hanya di desktop
-    <div className="box-content p-8 md:p-16 bg-white-bg flex flex-col md:flex-row gap-8 md:gap-24 justify-center items-center">
+    <div className="box-content p-8 md:p-16 bg-white-bg flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center">
       {/* 2. Ubah w-3xl (fixed) jadi w-full max-w-3xl (fleksibel). Teks di-center di mobile */}
       <MyPhoto />
 
@@ -40,8 +40,7 @@ function MyPhoto() {
 
       <div className="absolute z-5">
         <svg
-          width="382"
-          height="556"
+          className="w-full h-full"
           viewBox="0 0 382 556"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"

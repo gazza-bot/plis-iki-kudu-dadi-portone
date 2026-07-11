@@ -62,9 +62,7 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
   }, [username]);
 
   if (loading) {
-    return (
-      <SkeletonStats/>
-    );
+    return <SkeletonStats />;
   }
 
   if (error) {
@@ -78,7 +76,7 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
   return (
     <div className="w-full p-6 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
       {/* Bagian Header: Info Repositori */}
-      <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
+      <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
         {profile?.avatar_url && (
           <img
             src={profile.avatar_url}
@@ -87,17 +85,25 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
           />
         )}
         <div>
-          <h3 className="text-xl md:text-2xl font-bold text-gray-800">@{username} | {profile?.name}</h3>
+          <h3 className="text-xs md:text-2xl font-bold text-gray-800">
+            @{username} | {profile?.name}
+          </h3>
           <div className="flex gap-4 mt-2 text-sm text-gray-600">
             <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
-              <span className="font-bold text-white">
+              <span className="font-bold text-white text-[12px] md:text-[16px]">
                 {profile?.public_repos}
               </span>
-              <span className="text-white-bg">Repositori</span>
+              <span className="text-white-bg text-[12px] md:text-[16px]">
+                Repositori
+              </span>
             </div>
             <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
-              <span className="font-bold text-white">{profile?.followers}</span>
-              <span className="text-white-bg">Followers</span>
+              <span className="font-bold text-white text-[12px] md:text-[16px]">
+                {profile?.followers}
+              </span>
+              <span className="text-white-bg text-[12px] md:text-[16px]">
+                Followers
+              </span>
             </div>
           </div>
         </div>
@@ -126,14 +132,12 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
 const SkeletonStats: React.FC = () => {
   return (
     <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 animate-pulse">
-      
       <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
-        
         <div className="w-20 h-20 rounded-full bg-gray-200 border-4 border-gray-50 shrink-0"></div>
-        
+
         <div className="flex flex-col gap-3">
           <div className="h-7 w-40 bg-gray-200 rounded-md"></div>
-          
+
           <div className="flex gap-4">
             <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
             <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
@@ -143,10 +147,9 @@ const SkeletonStats: React.FC = () => {
 
       <div className="overflow-hidden pb-4">
         <div className="h-4 w-32 bg-gray-200 rounded-md mb-6"></div>
-        
+
         <div className="w-full h-35 bg-gray-100 rounded-xl"></div>
       </div>
-
     </div>
   );
 };
