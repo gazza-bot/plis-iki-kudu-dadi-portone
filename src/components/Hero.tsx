@@ -1,26 +1,34 @@
 import GithubStats from "./GithubStats.tsx";
+import { Card, CardImage, CardTitle } from "./Card.tsx";
 
 export default function Hero() {
   return (
     // 1. Kurangi padding di mobile (p-8), p-16 hanya di desktop
-    <div className="box-content p-8 md:p-16 bg-white-bg flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center">
-      {/* 2. Ubah w-3xl (fixed) jadi w-full max-w-3xl (fleksibel). Teks di-center di mobile */}
-      <MyPhoto />
+    <div className="flex flex-col bg-white-bg">
+      <div className="box-content p-8 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center">
+        {/* 2. Ubah w-3xl (fixed) jadi w-full max-w-3xl (fleksibel). Teks di-center di mobile */}
+        <MyPhoto />
 
-      <div className="w-full max-w-3xl flex flex-col gap-6 md:gap-8 text-center md:text-left items-center md:items-start">
-        {/* 3. Kecilkan ukuran font di mobile */}
-        <h1 className="font-heading text-3xl md:text-5xl">
-          Hello, My Name is
-          <strong className="text-blue-main"> Adil Nibras Gazza</strong>
-        </h1>
-        <p className="font-p text-lg md:text-2xl">
-          I'm an Information Technology student at Universitas Brawijaya with a
-          strong enthusiasm for technology, currently focusing on Web
-          Development and grinding with joining some competition in the campus.
-          I enjoy building things that are both functional and meaningful.
-        </p>
-        <GithubStats username={"gazza-bot"} />
+        <div className="w-full max-w-3xl flex flex-col gap-6 md:gap-8 text-center md:text-left items-center md:items-start">
+          {/* 3. Kecilkan ukuran font di mobile */}
+          <h1 className="font-heading text-3xl md:text-5xl">
+            Hello, My Name is
+            <strong className="text-blue-main"> Adil Nibras Gazza</strong>
+          </h1>
+          <p className="font-p text-lg md:text-2xl">
+            I'm an Information Technology student at Universitas Brawijaya with
+            a strong enthusiasm for technology, currently focusing on Web
+            Development and grinding with joining some competition in the
+            campus. I enjoy building things that are both functional and
+            meaningful.
+          </p>
+          <GithubStats username={"gazza-bot"} />
+        </div>
       </div>
+      <Card>
+        <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
+        <CardTitle title="Lorem Ipsum" desc="Lorem Ipsum dolor sit amet Lorem Ipsum" />
+      </Card>
     </div>
   );
 }

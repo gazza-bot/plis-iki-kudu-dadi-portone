@@ -28,7 +28,7 @@
 
 /* Navbar Layout template */
 .navbar {
-    @apply flex items-center px-12 py-3 md:px-24 md:py-6; 
+    @apply fixed flex items-center px-12 py-3 md:px-24 md:py-6 w-full bg-white-bg z-50 shadow-sm; 
 }
 
 .ul-nav {

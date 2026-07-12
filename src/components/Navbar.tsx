@@ -2,7 +2,7 @@ import { useState } from "react";
 
 export default function Navbar() {
   const [isMenuOpened, setMenuOpen] = useState(false);
-  
+
   return (
     <div className="bg-white-bg">
       <header className="h-24">
