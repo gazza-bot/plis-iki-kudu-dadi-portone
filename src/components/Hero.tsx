@@ -27,7 +27,7 @@ export default function Hero() {
       </div>
       <Card>
         <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
-        <CardTitle title="Lorem Ipsum" desc="Lorem Ipsum dolor sit amet Lorem Ipsum" />
+        <CardTitle title="Lorem Ipsum" desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras" />
       </Card>
     </div>
   );

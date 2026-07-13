@@ -1,5 +1,5 @@
 interface CardGroup {
-    direction : string
+    direction : boolean
 }
 
 export default function CardGroup ({ direction }:CardGroup) {

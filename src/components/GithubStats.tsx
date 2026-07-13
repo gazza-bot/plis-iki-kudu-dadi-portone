@@ -21,6 +21,7 @@ const customTheme = {
     "#2185D5", // Level 4: Sangat aktif (Warna utamamu)
   ],
 };
+
 interface GitHubData {
   public_repos: number;
   followers: number;

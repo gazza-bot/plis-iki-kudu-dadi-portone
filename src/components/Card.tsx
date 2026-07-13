@@ -12,7 +12,7 @@ interface PropsCardImage {
 
 export const Card = ({children}:PropsWithChildren ) => {
     return(
-        <div className="flex flex-col h-max w-max max-w-2xl bg-yellow-300 border border-gray-100 hover:shadow-md hover:shadow-blue-main rounded-xl">
+        <div className="flex flex-col h-max w-100 max-w-2xl overflow-hidden border border-gray-400 shadow-sm hover:shadow-md hover:shadow-blue-main rounded-xl">
         {children}
         </div>
     )
@@ -28,9 +28,9 @@ export function CardImage({source, alt}:PropsCard) {
 
 export function CardTitle({title, desc}:PropsCardImage) {
     return (
-        <div className="flex flex-col gap-4">
+        <div className="p-2 flex flex-col gap-4 border-gray-400 bg-white">
             <p className="font-bold font-heading text-xl">{title}</p>
-            <p className="font-heading font-medium text-[18px]">{desc}</p>
+            <p className="font-p text-gray-700 text-[18px]">{desc}</p>
         </div>
     )
 }
