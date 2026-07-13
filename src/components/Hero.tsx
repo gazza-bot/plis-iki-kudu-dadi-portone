@@ -1,5 +1,6 @@
 import GithubStats from "./GithubStats.tsx";
 import { Card, CardImage, CardTitle } from "./Card.tsx";
+import CardGroup from "./CardGroup.tsx";
 
 export default function Hero() {
   return (
@@ -25,10 +26,32 @@ export default function Hero() {
           <GithubStats username={"gazza-bot"} />
         </div>
       </div>
-      <Card>
-        <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
-        <CardTitle title="Lorem Ipsum" desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras" />
-      </Card>
+      <h2 className="flex justify-center font-heading text-xl lg:text-4xl my-8 ">
+        My Targets
+      </h2>
+      <CardGroup>
+        <Card>
+          <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
+          <CardTitle
+            title="Lorem Ipsum"
+            desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras"
+          />
+        </Card>
+        <Card>
+          <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
+          <CardTitle
+            title="Lorem Ipsum"
+            desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras"
+          />
+        </Card>
+        <Card>
+          <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
+          <CardTitle
+            title="Lorem Ipsum"
+            desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras"
+          />
+        </Card>
+      </CardGroup>
     </div>
   );
 }
