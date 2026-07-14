@@ -1,6 +1,13 @@
 import GithubStats from "./GithubStats.tsx";
 import { Card, CardImage, CardTitle } from "./Card.tsx";
 import CardGroup from "./CardGroup.tsx";
+import Badge from "./Badge.tsx";
+import TSLogo from '/src/assets/ts_logo.svg'
+
+const content = {
+  img: TSLogo,
+  text: "Lorem"
+}
 
 export default function Hero() {
   return (
@@ -32,6 +39,7 @@ export default function Hero() {
       <CardGroup>
         <Card>
           <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
+          <Badge content={content} variant="badgeBoth"/>
           <CardTitle
             title="Lorem Ipsum"
             desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras"
