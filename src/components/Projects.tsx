@@ -4,13 +4,11 @@ import Badge from "./Badge";
 
 export default function Projects() {
   return (
-    <div className="flex flex-col gap-4 md:flex-row justify-center items-center bg-blue-main p-4 md:p-16">
+    <div className="min-h-screen h-max flex flex-col gap-16 justify-center items-center bg-blue-main p-4 md:p-16">
       <div className="size-full md:size-1/2">
         <ContentProject />
       </div>
-      <div className="size-full md:size-1/2 bg-white-bg overflow-scroll [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] scrollbar-none md:m-4 px-4 py-8 border-0 rounded-xl">
-        <ProjectShowcase />
-      </div>
+      <ProjectShowcase />
     </div>
   );
 }
@@ -53,19 +51,19 @@ function ProjectShowcase() {
       badgeText: ["Web Development", "React"],
       desc: "Lorem ipsum dolor sit amet Lorem ipsum dolor sit amey",
       judul: "Projek Web Portofolio",
-    }
+    },
   ];
 
   return (
-    <div className="h-full w-full items-start">
-      <CardGroup className="flex! flex-row!">
+    <div className="flex justify-center h-full w-full items-center">
+      <CardGroup>
         {projectData.map((projectData) => {
           return (
             <Card>
               <CardImage source={projectData.url} alt={projectData.judul} />
               <Badge content={projectData.badgeText} variant="badgeText" />
               <CardTitle title={projectData.judul} desc={projectData.desc} />
-              <CardButton/>
+              <CardButton />
             </Card>
           );
         })}

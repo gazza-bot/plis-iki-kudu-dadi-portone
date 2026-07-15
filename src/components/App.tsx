@@ -1,6 +1,8 @@
 import Navbar from './Navbar.tsx'
 import Hero from './Hero.tsx'
 import Projects from './Projects.tsx';
+import MyTargets from './MyTargets.tsx';
+import Logo from './Logo.tsx';
 
 function App() {
   return (
@@ -8,6 +10,8 @@ function App() {
       <Navbar />
       <Hero />
       <Projects/>
+      <MyTargets/>
+      <Logo/>
     </div>
   );
 }
