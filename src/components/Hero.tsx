@@ -1,19 +1,12 @@
 import GithubStats from "./GithubStats.tsx";
 import { Card, CardImage, CardTitle } from "./Card.tsx";
 import CardGroup from "./CardGroup.tsx";
-import Badge from "./Badge.tsx";
-import TSLogo from '/src/assets/ts_logo.svg'
-
-const content = {
-  img: TSLogo,
-  text: "Lorem"
-}
 
 export default function Hero() {
   return (
     // 1. Kurangi padding di mobile (p-8), p-16 hanya di desktop
-    <div className="flex flex-col bg-white-bg">
-      <div className="box-content p-8 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center">
+    <div className="flex flex-col bg-white-bg py-8">
+      <div className="box-content p-8 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center mb-16">
         {/* 2. Ubah w-3xl (fixed) jadi w-full max-w-3xl (fleksibel). Teks di-center di mobile */}
         <MyPhoto />
 
@@ -36,10 +29,9 @@ export default function Hero() {
       <h2 className="flex justify-center font-heading text-xl lg:text-4xl my-8 ">
         My Targets
       </h2>
-      <CardGroup>
+      <CardGroup className="justify-center! w-full!">
         <Card>
           <CardImage source="/src/assets/dummy.png" alt="gwgantenk" />
-          <Badge content={content} variant="badgeBoth"/>
           <CardTitle
             title="Lorem Ipsum"
             desc="Lorem Ipsum dolor sit amet Lorem Ipsum dolor sit amet met met kuvuvweve ries Reog Ponorogo Tuladha Budaya engkang Oke plun Lorem Lorem suka nyiram air keras"
@@ -93,6 +85,7 @@ function MyPhoto() {
       </div>
 
       <div className="relative z-10 w-full h-full border-white overflow-hidden rounded-2xl md:rounded-none">
+        <div className="backdrop-blur-2xl inset-0 bg-black/10"></div>
         <img
           src="/src/assets/PhotoAing.png"
           alt="Foto Profil"

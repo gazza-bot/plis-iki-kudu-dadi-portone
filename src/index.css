@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
 @layer utilities {
@@ -20,7 +20,7 @@
 
 @theme{
     --font-heading: "Bebas Neue", sans-serif;
-    --font-p: "Instrument Serif", serif;
+    --font-p: "Inter", sans-serif;
 
     --color-blue-main: #2185D5;
     --color-white-bg: #F3F3F3;
