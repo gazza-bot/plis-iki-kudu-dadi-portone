@@ -1,15 +1,16 @@
 type variantLogo = "LogoOnly" | "LogoText";
 
 interface LogoProps {
-  className?: string;
+  classLogo?: string;
+  classText?:string;
   variant: variantLogo;
 }
 
 
-export default function Logo({ className, variant }: LogoProps) {
+export default function Logo({ classText,classLogo, variant }: LogoProps) {
     const LogoSVG = (
       <svg
-        className={`text-blue-main ${className}`}
+        className={`text-blue-main ${classLogo}`}
         width="46"
         height="36"
         viewBox="0 0 46 36"
@@ -31,7 +32,7 @@ export default function Logo({ className, variant }: LogoProps) {
     return (
       <div className="flex flex-row gap-2 w-full items-center justify-center">
         {LogoSVG}
-        <h1 className={`size-max font-heading tracking-tight text-white text-2xl ${className}`}>ADILDEV</h1>
+        <h1 className={`font-heading tracking-tight box-content text-white text-2xl ${classText}`}>ADILDEV</h1>
       </div>
     );
   }
