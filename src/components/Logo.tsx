@@ -7,7 +7,7 @@ interface LogoProps {
 
 
 export default function Logo({ className, variant }: LogoProps) {
-    const logoSVG = (
+    const LogoSVG = (
       <svg
         className={`text-blue-main ${className}`}
         width="46"
@@ -26,14 +26,12 @@ export default function Logo({ className, variant }: LogoProps) {
       </svg>
     );
   if (variant === "LogoOnly") {
-    return (
-      {logoSVG}
-    );
+    return LogoSVG
   } else if (variant === "LogoText") {
     return (
-      <div className="">
-        {logoSVG}
-        <h1>ADIL-DEV</h1>
+      <div className="flex flex-row gap-2 w-full items-center justify-center">
+        {LogoSVG}
+        <h1 className={`size-max font-heading tracking-tight text-white text-2xl ${className}`}>ADILDEV</h1>
       </div>
     );
   }

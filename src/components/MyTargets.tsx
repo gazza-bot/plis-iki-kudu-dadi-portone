@@ -3,8 +3,8 @@ import CardGroup from "./CardGroup";
 
 export default function MyTargets() {
   return (
-    <>
-      <h2 className="flex justify-center font-heading text-xl lg:text-4xl my-8 ">
+    <div className="flex flex-col min-h-screen h-max gap-8 items-center justify-center">
+      <h2 className="flex justify-center font-heading text-2xl lg:text-8xl">
         My Targets
       </h2>
       <CardGroup className="justify-center! w-full!">
@@ -30,6 +30,6 @@ export default function MyTargets() {
           />
         </Card>
       </CardGroup>
-    </>
+    </div>
   );
 }
