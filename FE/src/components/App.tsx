@@ -3,6 +3,7 @@ import Hero from './Hero.tsx'
 import Projects from './Projects.tsx';
 import MyTargets from './MyTargets.tsx';
 import Footer from './Footer.tsx';
+import { AIAssistantWidget } from './AIAssistantWidget.tsx';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Projects/>
       <MyTargets/>
       <Footer/>
+      <AIAssistantWidget/>
     </div>
   );
 }

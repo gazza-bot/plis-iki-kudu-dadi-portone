@@ -50,7 +50,7 @@ function ProjectShowcase() {
     const fetchProjects = async () => {
       try {
         setIsLoading(true);
-        const API_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+        const API_URL = import.meta.env.VITE_API_BASE_URL;
         const response = await fetch(`${API_URL}/projects`);
 
         if (!response.ok) {
@@ -71,7 +71,9 @@ function ProjectShowcase() {
 
   // Tampilan saat data sedang di-load
   if (isLoading) {
-    return <p className="text-white font-p animate-pulse">Memuat daftar proyek...</p>;
+    return (
+      <p className="text-white font-p animate-pulse">Memuat daftar proyek...</p>
+    );
   }
 
   // Tampilan jika server mati atau ada error

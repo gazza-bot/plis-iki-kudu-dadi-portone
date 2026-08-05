@@ -17,9 +17,9 @@ export default function Badge({ content, variant, className }: BadgeProps) {
     const iterateArr = [...content]
     return (
         <div className="flex justify-between p-2 bg-white">
-          {iterateArr.map((item) => {
+          {iterateArr.map((item, i) => {
             return (
-              <p className={`font-heading text-[18px] h-max w-max box-content px-6 py-2 rounded-full items-center text-blue-main bg-blue-100 ${className} `}>{item}</p>
+              <p key={i} className={`font-heading text-[18px] h-max w-max box-content px-6 py-2 rounded-full items-center text-blue-main bg-blue-100 ${className} `}>{item}</p>
             )
           })}
         </div>
@@ -27,7 +27,7 @@ export default function Badge({ content, variant, className }: BadgeProps) {
   } else if(variant === "badgeBoth"){
     return (
       <div className="flex flex-row gap-2 px-2 pt-2 items-center">
-        <img className="size-6 rounded-full bg-blue-main overflow-hidden p-0.5 box-content" src={content.img} alt="" />
+        <img className="size-max rounded-full bg-blue-main p-0.5 box-content" src={content.img} alt="" />
         <p className="font-heading text-[24px]">{content.text}</p>        
       </div>
     )
