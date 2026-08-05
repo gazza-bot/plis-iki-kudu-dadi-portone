@@ -4,7 +4,7 @@ export function AIAssistantWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Halo! Ada yang bisa saya bantu hari ini?' }
+    { role: 'ai', text: 'Halo! Aku Nimo, Asisten AI Adil. Ada yang bisa saya bantu hari ini?' }
   ]);
   const [loading, setLoading] = useState(false);
 
@@ -34,7 +34,6 @@ export function AIAssistantWidget() {
     setLoading(true);
 
     try {
-      // Mengambil URL dari env (atau fallback ke localhost:5000)
       const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
       const response = await fetch(`${BASE_URL}/api/chat`, {
@@ -70,7 +69,7 @@ export function AIAssistantWidget() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Widget AI Assistant (Jendela Chat) */}
       {isOpen && (
-        <div className="mb-4 w-80 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 sm:w-96">
+        <div className="mb-4 w-100 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 sm:w-96">
           {/* Header Widget */}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div className="flex items-center gap-2">

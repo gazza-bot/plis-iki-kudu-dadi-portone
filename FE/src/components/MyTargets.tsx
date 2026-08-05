@@ -1,5 +1,4 @@
 import { Card } from "./Card";
-import Badge from "./Badge";
 import CardGroup from "./CardGroup";
 import roket from "/src/assets/roket.svg";
 import target from '/src/assets/target.svg';
