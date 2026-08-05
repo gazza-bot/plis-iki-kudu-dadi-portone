@@ -7,10 +7,10 @@ interface LogoProps {
 }
 
 
-export default function Logo({ classText, classLogo, variant }: LogoProps) {
+export function Logo({ classText, classLogo, variant }: LogoProps) {
     const LogoSVG = (
       <svg
-        className={`text-blue-main ${classLogo}`}
+        className={`${classLogo}`}
         width="46"
         height="36"
         viewBox="0 0 46 36"

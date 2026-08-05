@@ -69,7 +69,7 @@ export function AIAssistantWidget() {
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
       {/* Widget AI Assistant (Jendela Chat) */}
       {isOpen && (
-        <div className="mb-4 w-100 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 sm:w-96">
+        <div className="mb-4 w-[calc(100vw-3rem)] sm:w-96 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300">
           {/* Header Widget */}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div className="flex items-center gap-2">
@@ -145,13 +145,13 @@ export function AIAssistantWidget() {
       {/* Floating Button (Tombol Pemicu) */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group flex size-24 items-center justify-center rounded-full bg-blue-main text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 hover:bg-white-bg hover:text-blue-main hover:shadow-md active:scale-95"
+        className="group flex size-16 sm:size-20 items-center justify-center rounded-full bg-blue-main text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 hover:bg-white-bg hover:text-blue-main hover:shadow-md active:scale-95"
         aria-label="Toggle AI Assistant"
       >
         <svg
           viewBox="0 0 48 48"
           xmlns="http://www.w3.org/2000/svg"
-          className="size-12 fill-current transition-transform duration-1000 group-hover:rotate-360"
+          className="size-8 sm:size-10 fill-current transition-transform duration-1000 group-hover:rotate-360"
         >
           <title>ai</title>
           <g id="Layer_2" data-name="Layer 2">

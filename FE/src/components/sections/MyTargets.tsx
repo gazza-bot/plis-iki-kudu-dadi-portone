@@ -1,10 +1,10 @@
-import { Card } from "./Card";
-import CardGroup from "./CardGroup";
+import { Card } from "../ui/Card";
+import { CardGroup } from "../ui/CardGroup";
 import roket from "/src/assets/roket.svg";
 import target from '/src/assets/target.svg';
 import lamp from '/src/assets/lamp.svg'
 
-export default function MyTargets() {
+export function MyTargets() {
   const targetsData = [
     {
       img: roket,
@@ -19,32 +19,32 @@ export default function MyTargets() {
     {
       img: lamp,
       text: "Terus Berkembang",
-      desc: "Selalu memperbarui pengetahuan dengan teknologi terbaru. Saya berkomitmen untuk terus belajar agar dapat memberikan solusi yang modern, relevan, dan efisien pada setiap proyek."
+      desc: "Selalu mengikuti perkembangan teknologi. Saya berkomitmen untuk terus belajar agar dapat memberikan solusi yang modern, relevan, dan efisien pada setiap proyek."
     }
 
   ];
 
   return (
-    <div className="bg-white-bg flex flex-col min-h-screen h-max gap-8 items-center justify-center">
-      <h2 className="flex justify-center font-heading text-2xl lg:text-8xl">
+    <div className="bg-white-bg flex flex-col min-h-screen gap-8 items-center justify-center py-16 px-4">
+      <h2 className="flex justify-center font-heading text-4xl md:text-6xl lg:text-8xl">
         My Targets
       </h2>
       <CardGroup className="justify-center! w-full!">
-        {targetsData.map((targetsData) => {
+        {targetsData.map((target) => {
           return (
-            <Card>
+            <Card key={target.text}>
               <div className="flex flex-col px-4 py-8 gap-4">
                 <div className="flex flex-row items-center gap-4">
                   <img
-                    src={targetsData.img}
-                    alt={targetsData.text}
+                    src={target.img}
+                    alt={target.text}
                     className="size-8"
                   />
-                  <p className="font-heading text-4xl w-full">
-                    {targetsData.text}
+                  <p className="font-heading text-2xl md:text-3xl w-full">
+                    {target.text}
                   </p>
                 </div>
-                <p className="font-p text-xl">{targetsData.desc}</p>
+                <p className="font-p text-base md:text-xl">{target.desc}</p>
               </div>
             </Card>
           );

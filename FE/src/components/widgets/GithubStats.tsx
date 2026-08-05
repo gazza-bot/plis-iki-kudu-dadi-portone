@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { GitHubCalendar } from "react-github-calendar";
 // Mendefinisikan tipe data yang akan kita ambil dari API
 
@@ -34,7 +34,7 @@ interface GithubStatsProps {
   username: string; // Username GitHub kamu
 }
 
-const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
+export function GithubStats({ username }: GithubStatsProps) {
   const [profile, setProfile] = useState<GitHubData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -52,8 +52,8 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
 
         const data: GitHubData = await response.json();
         setProfile(data);
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       } finally {
         setLoading(false);
       }
@@ -130,7 +130,7 @@ const GithubStats: React.FC<GithubStatsProps> = ({ username }) => {
   );
 };
 
-const SkeletonStats: React.FC = () => {
+function SkeletonStats() {
   return (
     <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 animate-pulse">
       <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
@@ -153,5 +153,4 @@ const SkeletonStats: React.FC = () => {
       </div>
     </div>
   );
-};
-export default GithubStats;
+}

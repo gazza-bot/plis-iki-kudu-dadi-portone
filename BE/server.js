@@ -8,24 +8,24 @@ dotenv.config();
 const projects = [
   {
     id: "1",
-    judul: "Portfolio Website",
-    desc: "Website portfolio interaktif menggunakan React, TypeScript, dan Tailwind CSS.",
-    url: "https://picsum.photos/seed/project1/600/400",
+    judul: "Math Solver",
+    desc: "Membantu pengguna untuk memecahkan soal soal matematika, Cocok bagi Mahasiswa, Pelajar maupun Pengajar",
+    url: "https://res.cloudinary.com/gdee221i/image/upload/v1785941621/MathSolver_bfhtba.png",
     badgeText: ["React", "TypeScript", "Tailwind"],
   },
   {
     id: "2",
-    judul: "RESTful API Service",
-    desc: "Backend service untuk manajemen data projek menggunakan Node.js dan Express.",
-    url: "https://picsum.photos/seed/project2/600/400",
-    badgeText: ["Node.js", "Express"],
+    judul: "Safely - Safe Navigation App",
+    desc: "High Fidelity Prototype Aplikasi Navigasi sekaligus pendeteksi lubang maupun kerusakan di jalan.",
+    url: "https://res.cloudinary.com/gdee221i/image/upload/f_auto,q_auto/Desain_tanpa_judul_wbfm9d",
+    badgeText: ["UI/UX", "Figma"],
   },
   {
     id: "3",
-    judul: "Bla Bla Bla",
-    desc: "Backend service untuk manajemen data projek menggunakan Node.js dan Express.",
-    url: "https://picsum.photos/seed/project2/600/400",
-    badgeText: ["Node.js", "Express"],
+    judul: "Eternity Generation Landing Page",
+    desc: "Web Statis untuk menunjukkan profil Eternity Generation, Angkatan 10 PP. Darut Taqwa Ponorogo.",
+    url: "https://res.cloudinary.com/gdee221i/image/upload/v1785941499/EternityWebsite_zn8rbx.png",
+    badgeText: ["React.js", "JavaScript"],
   },
 ];
 
@@ -33,7 +33,7 @@ const projects = [
 const profile = {
   nama: "Adil Nibras Gazza",
   peran: "Mahasiswa IT",
-  bio: "Mahasiswa yang sedang giat membangun portofolio, khususnya di FrontEnd Website serta UI/UX desain. Aktif mengikuti berbagai perlombaanguna mendapatkan pengalaman dan portofolio yang menarik.",
+  bio: "Mahasiswa yang sedang giat membangun portofolio, khususnya di Front-end Website serta UI/UX desain. Aktif mengikuti berbagai perlombaanguna mendapatkan pengalaman dan portofolio yang menarik.",
   targets: [
     "Kerja Efisien: Meriset segala hal agar produk dirancang sebaik mungkin dan meminimalkan kesalahan.",
     "Target Jelas: Perencanaan mudah dan pelaksanaan rapi agar output maksimal.",
@@ -86,7 +86,6 @@ const model = genAI.getGenerativeModel({
 app.get("/api/projects", (req, res) => {
   res.json(projects);
 });
-
 // Endpoint API Chatbot AI
 app.post("/api/chat", async (req, res) => {
   try {

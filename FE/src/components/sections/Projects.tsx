@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import CardGroup from "./CardGroup";
-import { Card, CardImage, CardTitle, CardButton } from "./Card";
-import Badge from "./Badge";
+import { CardGroup } from "../ui/CardGroup";
+import { Card, CardImage, CardTitle, CardButton } from "../ui/Card";
+import { Badge } from "../ui/Badge";
 
 interface Project {
   id: number;
@@ -11,9 +11,9 @@ interface Project {
   judul: string;
 }
 
-export default function Projects() {
+export function Projects() {
   return (
-    <div className="min-h-screen h-max flex flex-col gap-16 justify-center items-center bg-blue-main p-4 md:p-16">
+    <div className="min-h-screen flex flex-col gap-16 justify-center items-center bg-blue-main p-4 lg:p-8">
       <div className="size-full md:size-1/2">
         <ContentProject />
       </div>
@@ -24,7 +24,7 @@ export default function Projects() {
 
 function ContentProject() {
   return (
-    <div className="flex flex-col gap-2 h-full w-full px-2 md:px-8">
+    <div className="flex flex-col gap-2 h-full w-full">
       <h1 className="font-heading text-white text-xl md:text-5xl">
         Here's My Projects
       </h1>

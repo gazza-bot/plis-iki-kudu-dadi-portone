@@ -12,7 +12,7 @@ interface PropsCardImage {
 
 export const Card = ({ children }: PropsWithChildren) => {
   return (
-    <div className="bg-white flex flex-col justify-center h-max w-100 max-h-200 overflow-hidden border border-gray-400 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1 hover:shadow-blue-main rounded-xl">
+    <div className="bg-white flex flex-col justify-center h-max w-full max-w-[400px] max-h-[500px] overflow-hidden border border-gray-400 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-1 hover:shadow-blue-main rounded-xl">
       {children}
     </div>
   );
