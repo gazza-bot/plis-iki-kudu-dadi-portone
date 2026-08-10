@@ -7,8 +7,8 @@ export function Navbar() {
     <div className="bg-white-bg">
       <header className="h-24">
         {/* Desktop Nav */}
-        <nav className="fixed flex items-center px-12 py-3 md:px-24 md:py-6 w-full bg-white-bg z-50 shadow-sm">
-          <ul className="flex-row justify-between gap-10 items-center w-full hidden md:flex">
+        <nav className="fixed items-center px-12 py-3 md:px-24 md:py-6 w-full bg-white-bg z-50 shadow-sm hidden md:flex md:flex-row">
+          <ul className="flex flex-row justify-between gap-10 items-center w-full ">
             <li className="relative font-p text-2xl text-blue-main transition-all duration-300 ease-in-out after:absolute hover:after:bg-blue-main after:bottom-0 after:left-0 after:w-0 after:content-[''] after:h-0.5 hover:after:w-full after:transition-all after:duration-500">
               <a href="#projects">Projects</a>
             </li>
@@ -22,7 +22,7 @@ export function Navbar() {
         </nav>
 
         {/* Mobile Nav */}
-        <div className="flex flex-row justify-between w-full md:hidden items-center h-24 px-4">
+        <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4">
           <p className="font-heading text-blue-main font-bold tracking-tighter">
             ADIL NIBRAS GAZZA
           </p>
@@ -70,10 +70,10 @@ export function Navbar() {
             </li>
             <hr className="border-0 bg-white-bg h-px w-full z-50" />
             <li className="font-p text-white-bg text-3xl">
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">Instagram</a>
+              <a href="https://instagram.com/nibrasgazza" target="_blank" rel="noopener noreferrer">Instagram</a>
             </li>
             <li className="font-p text-white-bg text-3xl">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">Linkedin</a>
+              <a href="https://linkedin.com/adil-nibras-gazza" target="_blank" rel="noopener noreferrer">Linkedin</a>
             </li>
           </ul>
         </div>
