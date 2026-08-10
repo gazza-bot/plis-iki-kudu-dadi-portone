@@ -2,8 +2,9 @@ import { useState, useEffect } from "react";
 import { CardGroup } from "../ui/CardGroup";
 import { Card, CardImage, CardTitle, CardButton } from "../ui/Card";
 import { Badge } from "../ui/Badge";
+import DetailsProject from "../widgets/DetailsProject";
 
-interface Project {
+export interface Project {
   id: number;
   url: string;
   badgeText: string[];
@@ -45,7 +46,7 @@ function ProjectShowcase() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [selectedProject, setSelectedProject] = useState<Project | null >(null);
   useEffect(() => {
     const fetchProjects = async () => {
       try {
@@ -82,17 +83,29 @@ function ProjectShowcase() {
   }
 
   return (
-    <div className="flex justify-center h-full w-full items-center">
-      <CardGroup>
-        {projects.map((project) => (
-          <Card key={project.id}>
-            <CardImage source={project.url} alt={project.judul} />
-            <Badge content={project.badgeText} variant="badgeText" />
-            <CardTitle title={project.judul} desc={project.desc} />
-            <CardButton />
-          </Card>
-        ))}
-      </CardGroup>
-    </div>
+    <>
+      <div className="flex justify-center h-full w-full items-center">
+        <CardGroup>
+          {projects.map((project) => (
+            <Card key={project.id}>
+              <CardImage source={project.url} alt={project.judul} />
+              <Badge content={project.badgeText} variant="badgeText" />
+              <CardTitle title={project.judul} desc={project.desc} />
+              
+              {/* PERUBAHAN 2: Masukkan data project ini ke dalam state saat diklik */}
+              <CardButton onClick={() => setSelectedProject(project)} />
+            </Card>
+          ))}
+        </CardGroup>
+      </div>
+
+      {/* PERUBAHAN 3: Render modal JIKA ada project yang dipilih */}
+      {selectedProject && (
+        <DetailsProject 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} // Kirim fungsi untuk menutup modal
+        />
+      )}
+    </>
   );
 }
