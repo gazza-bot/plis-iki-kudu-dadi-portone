@@ -1,8 +1,9 @@
 import { useState } from "react";
+import ConnectForm from "../widgets/ConnectForm";
 
 export function Navbar() {
-  const [isMenuOpened, setMenuOpen] = useState(false);
-
+  const [isMenuOpened, setMenuOpen] = useState<boolean>(false);
+  const [isFormShowed, setFormShow] = useState<boolean>(false)
   return (
     <div className="bg-white-bg">
       <header className="h-24">
@@ -16,11 +17,11 @@ export function Navbar() {
               <a href="#about">About</a>
             </li>
             <li className="relative bg-blue-main px-4 py-2 text-white-bg font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
-              <a href="#contact">Let's Connect</a>
+              <button onClick={() => setFormShow(!isFormShowed)}>Let's Connect</button>
             </li>
           </ul>
         </nav>
-
+        {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)}/>}
         {/* Mobile Nav */}
         <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4">
           <p className="font-heading text-blue-main font-bold tracking-tighter">
