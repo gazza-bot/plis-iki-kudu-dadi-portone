@@ -134,7 +134,7 @@ export function AIAssistantWidget() {
             <button
               type="submit"
               disabled={loading || !input.trim()}
-              className="rounded-xl bg-blue-main px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-xl bg-blue-main px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-dark disabled:opacity-50"
             >
               Kirim
             </button>
