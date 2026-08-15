@@ -68,7 +68,7 @@ export default function ConnectForm({ handleClose }: FormProps) {
             />
           </div>
           <div className="flex flex-col gap-1 w-full">
-            <label htmlFor="formEmail">Name</label>
+            <label htmlFor="formEmail" className="font-p text-blue-main">Email</label>
             <input
               type="email"
               id="formEmail"
@@ -80,7 +80,7 @@ export default function ConnectForm({ handleClose }: FormProps) {
           </div>
         </div>
         <div className="flex flex-col gap-1">
-          <label htmlFor="formSubject">Subject</label>
+          <label htmlFor="formSubject" className="font-p text-blue-main">Subject</label>
           <input
             type="text"
             placeholder="Write the subject of your message"

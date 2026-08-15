@@ -46,7 +46,7 @@ export function CardTitle({ title, desc }: PropsCardImage) {
 export function CardButton({ onClick }: PropsCardAction) {
   return (
     <div className="p-2">
-      <button className="border-0 rounded-xl py-2 px-6 bg-blue-main w-full h-max text-xl font-heading text-white" onClick={onClick}>
+      <button className="border-0 rounded-xl py-2 px-6 bg-blue-main w-full h-max text-xl font-heading text-white hover:bg-blue-dark transition-all duration-400 ease-in-out" onClick={onClick}>
         See Details
       </button>
     </div>

@@ -10,11 +10,13 @@ export interface Project {
   badgeText: string[];
   desc: string;
   judul: string;
+  descFull : string;
+  demoUrl : string;
 }
 
 export function Projects() {
   return (
-    <div className="min-h-screen flex flex-col gap-16 justify-center items-center bg-blue-main p-4 lg:p-8">
+    <div id="projects" className="min-h-screen flex flex-col gap-16 justify-center items-center bg-blue-main p-4 lg:p-8">
       <div className="size-full md:size-1/2">
         <ContentProject />
       </div>
@@ -70,14 +72,12 @@ function ProjectShowcase() {
     fetchProjects();
   }, []);
 
-  // Tampilan saat data sedang di-load
   if (isLoading) {
     return (
       <p className="text-white font-p animate-pulse">Memuat daftar proyek...</p>
     );
   }
 
-  // Tampilan jika server mati atau ada error
   if (error) {
     return <p className="text-red-300 font-p">Gagal memuat proyek: {error}</p>;
   }
@@ -91,15 +91,12 @@ function ProjectShowcase() {
               <CardImage source={project.url} alt={project.judul} />
               <Badge content={project.badgeText} variant="badgeText" />
               <CardTitle title={project.judul} desc={project.desc} />
-              
-              {/* PERUBAHAN 2: Masukkan data project ini ke dalam state saat diklik */}
               <CardButton onClick={() => setSelectedProject(project)} />
             </Card>
           ))}
         </CardGroup>
       </div>
 
-      {/* PERUBAHAN 3: Render modal JIKA ada project yang dipilih */}
       {selectedProject && (
         <DetailsProject 
           project={selectedProject} 

@@ -36,8 +36,11 @@ export default function DetailsProject({ project, onClose }: DetailsProp) {
             {project.judul}
           </h2>
           <p className="font-p text-gray-700 text-lg tracking-wide leading-relaxed">
-            {project.desc}
+            {project.descFull}
           </p>
+          <a href={project.demoUrl} target="_blank" rel="noopener noreferrer" className="bg-blue-main transition-all duration-400 ease-in-out hover:bg-blue-dark rounded-2xl text-white font-heading py-4 text-center text-2xl">
+            Live Demo
+          </a>
         </div>
       </div>
     </div>
