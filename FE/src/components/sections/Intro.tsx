@@ -12,6 +12,8 @@ export default function Intro() {
   const [showIntro, setShowIntro] = useState(true);
 
   useLayoutEffect(() => {
+    document.body.style.overflow = "hidden";
+
     const ctx = gsap.context(() => {
       gsap.set(screen2Ref.current, { xPercent: 100 });
       gsap.set(screen3Ref.current, { yPercent: 100 });
@@ -26,17 +28,22 @@ export default function Intro() {
           "toScreen3+=0.6",
         )
         .to(screen3Ref.current, { yPercent: 0, duration: 1 }, "toScreen3+=0.6")
-        // jeda sebentar logo "diam" sebelum collapse
         .to(containerRef.current, {
           height: 0,
           duration: 0.8,
           ease: "power2.inOut",
           delay: 0.8,
-          onComplete: () => setShowIntro(false),
+          onComplete: () => {
+            document.body.style.overflow = "";
+            setShowIntro(false);
+          },
         });
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => {
+      document.body.style.overflow = "";
+      ctx.revert();
+    };
   }, []);
 
   if (!showIntro) return null;

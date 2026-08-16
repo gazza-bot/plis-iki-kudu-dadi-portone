@@ -2,14 +2,11 @@ import { GithubStats } from "../widgets/GithubStats";
 
 export function Hero() {
   return (
-    // 1. Kurangi padding di mobile (p-8), p-16 hanya di desktop
     <div className="flex flex-col bg-white-bg py-8 overflow-hidden">
       <div className="box-content p-6 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center mb-16">
-        {/* 2. Ubah w-3xl (fixed) jadi w-full max-w-3xl (fleksibel). Teks di-center di mobile */}
         <MyPhoto />
 
         <div className="w-full max-w-3xl flex flex-col gap-6 md:gap-8 text-center md:text-left items-center md:items-start">
-          {/* 3. Kecilkan ukuran font di mobile */}
           <h1 className="font-heading text-3xl md:text-5xl">
             Hello, My Name is
             <strong className="text-blue-main"> Adil Nibras Gazza</strong>
