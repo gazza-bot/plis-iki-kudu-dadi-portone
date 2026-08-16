@@ -1,5 +1,9 @@
 import { GithubStats } from "../widgets/GithubStats";
 import PhotoAing from '../../assets/PhotoAing.png'
+import tsLogo from '../../assets/ts_logo.svg'
+import reactIcon from '../../assets/React-icon.svg'
+import java from '../../assets/pngegg.png'
+import twLogo from '../../assets/tailwindlogo.svg'
 
 export function Hero() {
   return (
@@ -33,7 +37,7 @@ function MyPhoto() {
       {/* 5. Sesuaikan ukuran icon dan padding di mobile agar proporsional */}
       <div className="absolute -top-3 -left-3 md:-left-8 z-0 bg-white p-2 md:p-4 border-2 border-blue-main rounded-full shadow-lg transform -rotate-6 animate-bounce-kalem">
         <img
-          src="/src/assets/ts_logo.svg"
+          src={tsLogo}
           alt="TS Logo"
           className="size-6 md:size-12"
         />
@@ -65,7 +69,7 @@ function MyPhoto() {
 
       <div className="absolute -bottom-3 -right-1 md:-right-4 z-20 bg-white p-2 md:p-4 border-2 border-blue-main rounded-full shadow-xl transform animate-bounce-kalem rotate-12">
         <img
-          src="/src/assets/React-icon.svg"
+          src={reactIcon}
           alt="React Logo"
           className="size-8 md:size-16"
         />
@@ -73,7 +77,7 @@ function MyPhoto() {
 
       <div className="absolute top-10 -right-5 md:-right-12 z-20 border-2 border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
         <img
-          src="/src/assets/pngegg.png"
+          src={java}
           alt="Icon"
           className="size-5 md:size-8"
         />
@@ -81,7 +85,7 @@ function MyPhoto() {
 
       <div className="absolute bottom-6 -left-5 md:-left-12 z-20 border-2 border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
         <img
-          src="/src/assets/tailwindlogo.svg"
+          src={twLogo}
           alt="Icon"
           className="size-5 md:size-8"
         />
