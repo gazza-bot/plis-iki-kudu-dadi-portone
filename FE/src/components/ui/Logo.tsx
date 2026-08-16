@@ -32,7 +32,7 @@ export function Logo({ classText, classLogo, variant }: LogoProps) {
     return (
       <div className="flex flex-row gap-2 w-full items-center justify-center">
         {LogoSVG}
-        <h1 className={`font-heading tracking-tight box-content text-white text-2xl ${classText}`}>ADILDEV</h1>
+        <h1 className={`font-heading tracking-tight box-content text-2xl ${classText}`}>ADILDEV</h1>
       </div>
     );
   }
