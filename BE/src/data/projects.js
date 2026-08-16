@@ -14,7 +14,7 @@ const projects = [
     judul: "Safely - Safe Navigation App",
     desc: "High Fidelity Prototype Aplikasi Navigasi sekaligus pendeteksi lubang maupun kerusakan di jalan.",
     descFull:
-      "Safely adalah prototype aplikasi navigasi pintar yang aku desain pakai Figma buat bantu pengendara motor biar lebih aman dari jalanan berlubang. Prototype interaktif (High-Fidelity) ini sengaja dibuat buat nunjukin simulasi gimana hp kita bisa otomatis mendeteksi jalan rusak waktu lagi dipakai navigasi tanpa bikin ribet. Di dalamnya udah lengkap banget gambaran fitur utamanya, mulai dari Peta Navigasi yang bisa ngasih peringatan bahaya secara real-time, simulasi Deteksi Lubang Otomatis yang bisa langsung ngirim laporan, sampai halaman Profil buat nukerin poin reward hasil laporan kita, plus ada juga menu pengaturan buat nyesuain preferensi sensor dan jenis kendaraan.",
+      "Safely adalah prototype navigasi pintar berbasis Figma yang dirancang untuk membantu pengendara motor menghindari jalan berlubang. Prototype High-Fidelity ini mensimulasikan deteksi kerusakan jalan secara otomatis saat navigasi berlangsung, lengkap dengan peta peringatan real-time, pelaporan lubang otomatis, sistem poin reward, hingga pengaturan preferensi sensor dan jenis kendaraan.",
     url: "https://res.cloudinary.com/gdee221i/image/upload/f_auto,q_auto/Desain_tanpa_judul_wbfm9d",
     badgeText: ["UI/UX", "Figma"],
     demoUrl: "https://tinyurl.com/Safely-Prototype",
