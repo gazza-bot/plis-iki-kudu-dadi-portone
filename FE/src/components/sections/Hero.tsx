@@ -1,4 +1,5 @@
 import { GithubStats } from "../widgets/GithubStats";
+import PhotoAing from '../../assets/PhotoAing.png'
 
 export function Hero() {
   return (
@@ -56,7 +57,7 @@ function MyPhoto() {
       <div className="relative z-10 w-full h-full border-white overflow-hidden rounded-2xl md:rounded-none">
         <div className="backdrop-blur-2xl inset-0 bg-black/10"></div>
         <img
-          src="/src/assets/PhotoAing.png"
+          src={PhotoAing}
           alt="Foto Profil"
           className="w-full h-full object-cover"
         />
