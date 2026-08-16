@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 
 export function AIAssistantWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [input, setInput] = useState('');
   const [messages, setMessages] = useState([
     { role: 'ai', text: 'Halo! Aku Nimo, Asisten AI Adil. Ada yang bisa saya bantu hari ini?' }
@@ -10,7 +11,6 @@ export function AIAssistantWidget() {
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  // Otomatis scroll ke pesan paling bawah saat ada pesan baru
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -21,7 +21,16 @@ export function AIAssistantWidget() {
     }
   }, [messages, isOpen]);
 
-  // Fungsi untuk mengirim pesan ke Backend Express
+  // Kelola mount/unmount panel biar animasi keluar (mengecil) sempat kelihatan
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+    } else {
+      const timeout = setTimeout(() => setShouldRender(false), 300);
+      return () => clearTimeout(timeout);
+    }
+  }, [isOpen]);
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
@@ -29,7 +38,6 @@ export function AIAssistantWidget() {
     const userMessage = input;
     setInput('');
 
-    // Tambahkan pesan user ke UI
     setMessages((prev) => [...prev, { role: 'user', text: userMessage }]);
     setLoading(true);
 
@@ -68,8 +76,12 @@ export function AIAssistantWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
       {/* Widget AI Assistant (Jendela Chat) */}
-      {isOpen && (
-        <div className="mb-4 w-[calc(100vw-3rem)] sm:w-96 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300">
+      {shouldRender && (
+        <div
+          className={`mb-4 w-[calc(100vw-3rem)] sm:w-96 origin-bottom-right rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 ease-out ${
+            isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+          }`}
+        >
           {/* Header Widget */}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div className="flex items-center gap-2">
@@ -109,7 +121,6 @@ export function AIAssistantWidget() {
               </div>
             ))}
 
-            {/* Indikator Loading */}
             {loading && (
               <div className="flex justify-start">
                 <div className="font-p max-w-[85%] rounded-2xl rounded-tl-none bg-gray-100 p-3 text-gray-400 italic">
