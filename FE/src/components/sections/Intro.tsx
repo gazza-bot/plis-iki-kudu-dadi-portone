@@ -54,7 +54,7 @@ export default function Intro() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-white-bg"
+      className="relative w-full h-screen overflow-hidden bg-white-bg z-50"
     >
       {/* Screen 1 - Nama */}
       <div

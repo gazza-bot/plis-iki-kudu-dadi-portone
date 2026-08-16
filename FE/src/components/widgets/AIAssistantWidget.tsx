@@ -66,7 +66,7 @@ export function AIAssistantWidget() {
   };
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
+    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
       {/* Widget AI Assistant (Jendela Chat) */}
       {isOpen && (
         <div className="mb-4 w-[calc(100vw-3rem)] sm:w-96 rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300">
