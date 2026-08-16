@@ -12,15 +12,14 @@ export default function Intro() {
   const [showIntro, setShowIntro] = useState(true);
 
   useLayoutEffect(() => {
-    document.body.style.overflow = "hidden";
-
     const ctx = gsap.context(() => {
       gsap.set(screen2Ref.current, { xPercent: 100 });
       gsap.set(screen3Ref.current, { yPercent: 100 });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-      tl.to(screen1Ref.current, { xPercent: -100, duration: 1 }, "toScreen2")
+      tl.addLabel("toScreen2", "+=1.5") // <- Screen 1 diam dulu 1.5 detik
+        .to(screen1Ref.current, { xPercent: -100, duration: 1 }, "toScreen2")
         .to(screen2Ref.current, { xPercent: 0, duration: 2 }, "toScreen2")
         .to(
           screen2Ref.current,
@@ -28,23 +27,27 @@ export default function Intro() {
           "toScreen3+=0.6",
         )
         .to(screen3Ref.current, { yPercent: 0, duration: 1 }, "toScreen3+=0.6")
+        // jeda sebentar logo "diam" sebelum collapse
         .to(containerRef.current, {
           height: 0,
           duration: 0.8,
           ease: "power2.inOut",
           delay: 0.8,
-          onComplete: () => {
-            document.body.style.overflow = "";
-            setShowIntro(false);
-          },
+          onComplete: () => setShowIntro(false),
         });
     }, containerRef);
 
+    return () => ctx.revert();
+  }, []);
+
+  // lock scroll selama intro tampil, otomatis unlock pas selesai
+  useLayoutEffect(() => {
+    document.body.style.overflow = showIntro ? "hidden" : "";
+
     return () => {
       document.body.style.overflow = "";
-      ctx.revert();
     };
-  }, []);
+  }, [showIntro]);
 
   if (!showIntro) return null;
 
