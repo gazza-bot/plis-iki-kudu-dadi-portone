@@ -23,7 +23,7 @@ export function Navbar() {
         </nav>
         {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)}/>}
         {/* Mobile Nav */}
-        <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4">
+        <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4 z-50">
           <p className="font-heading text-blue-main font-bold tracking-tighter">
             ADIL NIBRAS GAZZA
           </p>
