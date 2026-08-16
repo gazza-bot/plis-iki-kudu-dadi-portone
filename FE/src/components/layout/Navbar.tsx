@@ -86,7 +86,10 @@ export function Navbar() {
               <a href="#about">About</a>
             </li>
             <li className="relative z-50 bg-white-bg px-4 py-2 text-blue-main font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
-              <a href="#contact">Let's Connect</a>
+              <button onClick={() => {
+                setFormShow(!isFormShowed);
+                setMenuOpen(false)
+              }}>Let's Connect</button>
             </li>
             <hr className="border-0 bg-white-bg h-px w-full z-50" />
             <li className="font-p text-white-bg text-3xl">
