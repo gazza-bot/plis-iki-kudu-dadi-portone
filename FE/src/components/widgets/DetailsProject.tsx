@@ -10,6 +10,23 @@ export default function DetailsProject({ project, onClose }: DetailsProp) {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    const scrollY = window.scrollY;
+
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
+  useEffect(() => {
     // trigger animasi masuk setelah mount
     const raf = requestAnimationFrame(() => setIsVisible(true));
     return () => cancelAnimationFrame(raf);
@@ -29,7 +46,7 @@ export default function DetailsProject({ project, onClose }: DetailsProp) {
       onClick={handleClose}
     >
       <div
-        className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-2xl bg-white shadow-xl flex flex-col transition-all duration-200 ease-out ${
+        className={`relative w-full max-w-2xl max-h-[90vh] overflow-y-auto overscroll-contain rounded-2xl bg-white shadow-xl flex flex-col transition-all duration-200 ease-out ${
           isVisible
             ? "opacity-100 scale-100 translate-y-0"
             : "opacity-0 scale-95 translate-y-4"

@@ -1,5 +1,4 @@
-import { Navbar, Hero, Projects, MyTargets, Footer, AIAssistantWidget } from '.';
-import Intro from './sections/Intro';
+import { Navbar, Hero, Projects, MyTargets, Footer, AIAssistantWidget, Intro } from '.';
 
 function App() {
   return (

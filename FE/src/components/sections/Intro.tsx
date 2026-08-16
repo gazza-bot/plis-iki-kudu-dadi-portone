@@ -4,7 +4,7 @@ import { useRef, useLayoutEffect, useState } from "react";
 import gsap from "gsap";
 import { Logo } from "../ui/Logo";
 
-export default function Intro() {
+export function Intro() {
   const containerRef = useRef(null);
   const screen1Ref = useRef(null);
   const screen2Ref = useRef(null);

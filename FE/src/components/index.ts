@@ -16,3 +16,6 @@ export { Logo } from "./ui/Logo";
 // Widgets
 export { AIAssistantWidget } from "./widgets/AIAssistantWidget";
 export { GithubStats } from "./widgets/GithubStats";
+
+//Intro
+export { Intro } from "./sections/Intro"
