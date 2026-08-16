@@ -54,12 +54,12 @@ export default function Intro() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-screen overflow-hidden bg-white-bg z-50"
+      className="relative w-full h-dvh overflow-hidden bg-white-bg"
     >
       {/* Screen 1 - Nama */}
       <div
         ref={screen1Ref}
-        className="bg-blue-main absolute top-0 left-0 w-full h-screen flex justify-center items-center"
+        className="bg-blue-main absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
       >
         <h1 className="text-4xl md:text-9xl font-heading tracking-wide text-white font-bold">
           Adil Nibras Gazza
@@ -69,7 +69,7 @@ export default function Intro() {
       {/* Screen 2 - Role */}
       <div
         ref={screen2Ref}
-        className="bg-white-bg absolute top-0 left-0 w-full h-screen flex flex-col justify-center items-center gap-4"
+        className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex flex-col justify-center items-center gap-4"
       >
         <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
           Tech Enthusiast
@@ -85,7 +85,7 @@ export default function Intro() {
       {/* Screen 3 - Logo */}
       <div
         ref={screen3Ref}
-        className="bg-white-bg absolute top-0 left-0 w-full h-screen flex justify-center items-center"
+        className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
       >
         <Logo
           variant="LogoText"
