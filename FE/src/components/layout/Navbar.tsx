@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import ConnectForm from "../widgets/ConnectForm";
+import { Logo } from "../ui/Logo";
 
 export function Navbar() {
   const [isMenuOpened, setMenuOpen] = useState<boolean>(false);
@@ -43,9 +44,7 @@ export function Navbar() {
         {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)}/>}
         {/* Mobile Nav */}
         <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4 z-50">
-          <p className="font-heading text-blue-main font-bold tracking-tighter">
-            ADIL NIBRAS GAZZA
-          </p>
+          <Logo variant="LogoOnly" classLogo="text-blue-main"/>
           <button onClick={() => setMenuOpen(!isMenuOpened)}>
             <svg
               className="text-blue-main"

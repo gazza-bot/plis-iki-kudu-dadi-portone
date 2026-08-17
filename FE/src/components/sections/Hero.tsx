@@ -35,7 +35,7 @@ function MyPhoto() {
     // 4. Hapus 'hidden' agar tampil di mobile, sesuaikan ukuran container (w-56 h-80 di mobile)
     <div className="relative flex justify-center items-center w-48 h-72 sm:w-56 sm:h-80 md:w-72 md:h-144 mt-8 md:mt-0 mx-auto overflow-visible">
       {/* 5. Sesuaikan ukuran icon dan padding di mobile agar proporsional */}
-      <div className="absolute -top-3 -left-3 md:-left-8 z-0 bg-white p-2 md:p-4 border-2 border-blue-main rounded-full shadow-lg transform -rotate-6 animate-bounce-kalem">
+      <div className="absolute -top-3 -left-3 md:-left-8 z-0 bg-white p-2 md:p-4 border border-blue-main rounded-full shadow-lg transform -rotate-6 animate-bounce-kalem">
         <img
           src={tsLogo}
           alt="TS Logo"
@@ -58,7 +58,7 @@ function MyPhoto() {
         </svg>
       </div>
 
-      <div className="relative z-10 w-full h-full border-white overflow-hidden rounded-2xl md:rounded-none">
+      <div className="relative z-10 w-full h-full overflow-hidden rounded-2xl md:rounded-none">
         <div className="backdrop-blur-2xl inset-0 bg-black/10"></div>
         <img
           src={PhotoAing}
@@ -67,7 +67,7 @@ function MyPhoto() {
         />
       </div>
 
-      <div className="absolute -bottom-3 -right-1 md:-right-4 z-20 bg-white p-2 md:p-4 border-2 border-blue-main rounded-full shadow-xl transform animate-bounce-kalem rotate-12">
+      <div className="absolute -bottom-3 -right-1 md:-right-4 z-20 bg-white p-2 md:p-4 border border-blue-main rounded-full shadow-xl transform animate-bounce-kalem rotate-12">
         <img
           src={reactIcon}
           alt="React Logo"
@@ -75,7 +75,7 @@ function MyPhoto() {
         />
       </div>
 
-      <div className="absolute top-10 -right-5 md:-right-12 z-20 border-2 border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
+      <div className="absolute top-10 -right-5 md:-right-12 z-20 border border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
         <img
           src={java}
           alt="Icon"
@@ -83,7 +83,7 @@ function MyPhoto() {
         />
       </div>
 
-      <div className="absolute bottom-6 -left-5 md:-left-12 z-20 border-2 border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
+      <div className="absolute bottom-6 -left-5 md:-left-12 z-20 border border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
         <img
           src={twLogo}
           alt="Icon"

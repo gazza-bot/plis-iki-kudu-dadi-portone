@@ -11,8 +11,8 @@ export function Logo({ classText, classLogo, variant }: LogoProps) {
     const LogoSVG = (
       <svg
         className={`${classLogo}`}
-        width="46"
-        height="36"
+        width="36"
+        height="48"
         viewBox="0 0 46 36"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
