@@ -4,7 +4,7 @@ import { Logo } from "../ui/Logo";
 
 export function Navbar() {
   const [isMenuOpened, setMenuOpen] = useState<boolean>(false);
-  const [isFormShowed, setFormShow] = useState<boolean>(false)
+  const [isFormShowed, setFormShow] = useState<boolean>(false);
 
   useEffect(() => {
     if (isMenuOpened) {
@@ -37,14 +37,16 @@ export function Navbar() {
               <a href="#about">About</a>
             </li>
             <li className="relative bg-blue-main px-4 py-2 text-white-bg font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
-              <button onClick={() => setFormShow(!isFormShowed)}>Let's Connect</button>
+              <button onClick={() => setFormShow(!isFormShowed)}>
+                Let's Connect
+              </button>
             </li>
           </ul>
         </nav>
-        {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)}/>}
+        {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)} />}
         {/* Mobile Nav */}
         <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4 z-50">
-          <Logo variant="LogoOnly" classLogo="text-blue-main"/>
+          <Logo variant="LogoOnly" classLogo="text-blue-main" />
           <button onClick={() => setMenuOpen(!isMenuOpened)}>
             <svg
               className="text-blue-main"
@@ -78,24 +80,44 @@ export function Navbar() {
             </button>
           </div>
           <ul className="flex flex-col gap-16 items-center z-50">
-            <li className="font-p text-white-bg text-3xl">
-              <a href="#projects">Projects</a>
+            <li className="font-p text-white-bg text-2xl">
+              <button onClick={() => setMenuOpen(!isMenuOpened)}>
+                <a href="#projects">Projects</a>
+              </button>
             </li>
-            <li className="font-p text-white-bg text-3xl">
-              <a href="#about">About</a>
+            <li className="font-p text-white-bg text-2xl">
+              <button onClick={() => setMenuOpen(!isMenuOpened)}>
+                <a href="#about">About</a>
+              </button>
             </li>
             <li className="relative z-50 bg-white-bg px-4 py-2 text-blue-main font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
-              <button onClick={() => {
-                setFormShow(!isFormShowed);
-                setMenuOpen(false)
-              }}>Let's Connect</button>
+              <button
+                onClick={() => {
+                  setFormShow(!isFormShowed);
+                  setMenuOpen(false);
+                }}
+              >
+                Let's Connect
+              </button>
             </li>
             <hr className="border-0 bg-white-bg h-px w-full z-50" />
-            <li className="font-p text-white-bg text-3xl">
-              <a href="https://instagram.com/nibrasgazza" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <li className="font-p text-white-bg text-2xl">
+              <a
+                href="https://instagram.com/nibrasgazza"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Instagram
+              </a>
             </li>
-            <li className="font-p text-white-bg text-3xl">
-              <a href="https://linkedin.com/adil-nibras-gazza" target="_blank" rel="noopener noreferrer">Linkedin</a>
+            <li className="font-p text-white-bg text-2xl">
+              <a
+                href="https://linkedin.com/adil-nibras-gazza"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Linkedin
+              </a>
             </li>
           </ul>
         </div>
