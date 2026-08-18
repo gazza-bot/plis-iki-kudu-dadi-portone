@@ -40,7 +40,7 @@ export default function ConnectForm({ handleClose }: FormProps) {
 
   return (
     <div
-      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-3 sm:p-8"
+      className="fixed inset-0 bg-black/80 backdrop-blur-sm z-60 flex items-center justify-center p-3 sm:p-8"
       onClick={handleClose}
     >
       <form
@@ -128,7 +128,7 @@ export default function ConnectForm({ handleClose }: FormProps) {
           <input
             type="submit"
             value="Send"
-            className="w-full sm:w-auto sm:min-w-[200px] text-lg sm:text-2xl font-heading tracking-wide px-4 sm:px-2 py-3 sm:py-4 bg-blue-main rounded-2xl text-white cursor-pointer hover:bg-blue-dark transition"
+            className="w-full sm:w-auto sm:min-w-50 text-lg sm:text-2xl font-heading tracking-wide px-4 sm:px-2 py-3 sm:py-4 bg-blue-main rounded-2xl text-white cursor-pointer hover:bg-blue-dark transition"
           />
         </div>
         <p className="text-black/30 font-p text-sm">{result}</p>
