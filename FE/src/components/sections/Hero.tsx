@@ -7,7 +7,7 @@ import twLogo from '../../assets/tailwindlogo.svg'
 
 export function Hero() {
   return (
-    <div className="flex flex-col bg-white-bg py-8 overflow-hidden">
+    <div className="flex flex-col bg-white-bg py-8 overflow-hidden" id="about">
       <div className="box-content p-6 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center mb-16">
         <MyPhoto />
 

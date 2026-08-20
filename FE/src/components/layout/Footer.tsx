@@ -14,7 +14,7 @@ export function Footer() {
         <ul className="flex flex-col gap-4 md:gap-8 text-white items-start">
           {navigateMenu.map((menu) => (
             <li key={menu} className="font-p text-2xl md:text-4xl">
-              <a className="decoration-none hover:text-white/70 transition-all" href={`#${menu}`}>
+              <a className="decoration-none hover:text-white/70 transition-all" href={`#${menu.toLowerCase()}`}>
                 {menu}
               </a>
             </li>
