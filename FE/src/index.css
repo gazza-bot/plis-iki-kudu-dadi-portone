@@ -1,9 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap");
 @import "tailwindcss";
 
 @layer utilities {
+  @keyframes dots {
+  0%, 20% { content: "."; }
+  40% { content: ".."; }
+  60% { content: "..."; }
+  80%, 100% { content: "...."; }
+}
+
+.animate-dots::after {
+  content: ".";
+  animation: dots 2s infinite steps(1, end);
+}
+
   @keyframes bounce-kalem {
-    0%, 100% {
+    0%,
+    100% {
       transform: translateY(-5%);
       animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
     }
@@ -19,10 +32,10 @@
 }
 
 @theme {
-    --font-heading: "Bebas Neue", sans-serif;
-    --font-p: "Plus Jakarta Sans", sans-serif;
+  --font-heading: "Bebas Neue", sans-serif;
+  --font-p: "Plus Jakarta Sans", sans-serif;
 
-    --color-blue-main: #2185D5;
-    --color-white-bg: #F3F3F3;
-    --color-blue-dark : #175D95;
+  --color-blue-main: #2185d5;
+  --color-white-bg: #f3f3f3;
+  --color-blue-dark: #175d95;
 }

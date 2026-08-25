@@ -1,18 +1,21 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 export function AIAssistantWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
-    { role: 'ai', text: 'Halo! Aku Nimo, Asisten AI Adil. Ada yang bisa saya bantu hari ini?' }
+    {
+      role: "ai",
+      text: "Halo! Aku Nimo, Asisten AI Adil. Ada yang bisa saya bantu hari ini?",
+    },
   ]);
   const [loading, setLoading] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -36,18 +39,18 @@ export function AIAssistantWidget() {
     if (!input.trim() || loading) return;
 
     const userMessage = input;
-    setInput('');
+    setInput("");
 
-    setMessages((prev) => [...prev, { role: 'user', text: userMessage }]);
+    setMessages((prev) => [...prev, { role: "user", text: userMessage }]);
     setLoading(true);
 
     try {
       const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
       const response = await fetch(`${BASE_URL}/api/chat`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ message: userMessage }),
       });
@@ -55,18 +58,18 @@ export function AIAssistantWidget() {
       const data = await response.json();
 
       if (response.ok) {
-        setMessages((prev) => [...prev, { role: 'ai', text: data.reply }]);
+        setMessages((prev) => [...prev, { role: "ai", text: data.reply }]);
       } else {
         setMessages((prev) => [
           ...prev,
-          { role: 'ai', text: 'Maaf, terjadi kesalahan pada server AI.' },
+          { role: "ai", text: "Maaf, terjadi kesalahan pada server AI." },
         ]);
       }
     } catch (error) {
-      console.error('Gagal terhubung ke backend:', error);
+      console.error("Gagal terhubung ke backend:", error);
       setMessages((prev) => [
         ...prev,
-        { role: 'ai', text: 'Gagal terhubung ke server. Pastikan backend sudah berjalan.' },
+        { role: "ai", text: "Gagal terhubung ke server." },
       ]);
     } finally {
       setLoading(false);
@@ -75,21 +78,21 @@ export function AIAssistantWidget() {
 
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-      {/* Widget AI Assistant (Jendela Chat) */}
       {shouldRender && (
         <div
           className={`mb-4 w-[calc(100vw-3rem)] sm:w-96 origin-bottom-right rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 ease-out ${
-            isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0'
+            isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"
           }`}
         >
-          {/* Header Widget */}
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
             <div className="flex items-center gap-2">
               <span className="relative flex h-3 w-3">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
                 <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
               </span>
-              <h3 className="font-p font-semibold text-gray-800">AI Assistant</h3>
+              <h3 className="font-p font-semibold text-gray-800">
+                AI Assistant
+              </h3>
             </div>
             <button
               onClick={() => setIsOpen(false)}
@@ -100,20 +103,19 @@ export function AIAssistantWidget() {
             </button>
           </div>
 
-          {/* Area Percakapan / Isi Widget */}
           <div className="my-4 h-64 overflow-y-auto pr-1 space-y-3 text-sm">
             {messages.map((msg, index) => (
               <div
                 key={index}
                 className={`flex ${
-                  msg.role === 'user' ? 'justify-end' : 'justify-start'
+                  msg.role === "user" ? "justify-end" : "justify-start"
                 }`}
               >
                 <div
                   className={`font-p max-w-[85%] rounded-2xl p-3 ${
-                    msg.role === 'user'
-                      ? 'rounded-tr-none bg-blue-main text-white'
-                      : 'rounded-tl-none bg-gray-100 text-gray-700'
+                    msg.role === "user"
+                      ? "rounded-tr-none bg-blue-main text-white"
+                      : "rounded-tl-none bg-gray-100 text-gray-700"
                   }`}
                 >
                   {msg.text}
@@ -123,8 +125,8 @@ export function AIAssistantWidget() {
 
             {loading && (
               <div className="flex justify-start">
-                <div className="font-p max-w-[85%] rounded-2xl rounded-tl-none bg-gray-100 p-3 text-gray-400 italic">
-                  Memikirkan jawaban...
+                <div className="font-p max-w-[85%] rounded-2xl rounded-tl-none bg-gray-100 p-3 text-gray-400">
+                  Nimo sedang berfikir <span className="animate-dots"></span>
                 </div>
               </div>
             )}
@@ -133,7 +135,10 @@ export function AIAssistantWidget() {
           </div>
 
           {/* Form Input */}
-          <form onSubmit={handleSendMessage} className="flex gap-2 border-t border-gray-100 pt-3">
+          <form
+            onSubmit={handleSendMessage}
+            className="flex gap-2 border-t border-gray-100 pt-3"
+          >
             <input
               type="text"
               value={input}
@@ -153,7 +158,7 @@ export function AIAssistantWidget() {
         </div>
       )}
 
-      {/* Floating Button (Tombol Pemicu) */}
+      {/* Floating Button*/}
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="group flex size-16 sm:size-20 items-center justify-center rounded-full bg-blue-main text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 hover:bg-white-bg hover:text-blue-main hover:shadow-md active:scale-95"
