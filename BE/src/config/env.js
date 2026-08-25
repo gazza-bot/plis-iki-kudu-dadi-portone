@@ -22,6 +22,10 @@ const env = {
     globalRateLimit : {
         windowMs : 60 * 1000,
         max : 100
+    },
+    sendEmailLimit : {
+        windowMs : 24 * 3600 * 1000,
+        max : 1
     }
 }
 
