@@ -124,11 +124,11 @@ export function AIAssistantWidget() {
             ))}
 
             {loading && (
-              <div className="flex justify-start">
+              <p className="flex justify-start">
                 <div className="font-p max-w-[85%] rounded-2xl rounded-tl-none bg-gray-100 p-3 text-gray-400">
                   Nimo sedang berfikir <span className="animate-dots"></span>
                 </div>
-              </div>
+              </p>
             )}
 
             <div ref={chatEndRef} />
