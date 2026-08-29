@@ -1,21 +1,25 @@
 import { GithubStats } from "../widgets/GithubStats";
-import PhotoAing from '../../assets/PhotoAing.png'
-import tsLogo from '../../assets/ts_logo.svg'
-import reactIcon from '../../assets/React-icon.svg'
-import java from '../../assets/pngegg.png'
-import twLogo from '../../assets/tailwindlogo.svg'
+import PhotoAing from "../../assets/PhotoAing.webp";
+import tsLogo from "../../assets/ts_logo.svg";
+import reactIcon from "../../assets/React-icon.svg";
+import java from "../../assets/pngegg.png";
+import twLogo from "../../assets/tailwindlogo.svg";
 
 export function Hero() {
   return (
-    <div className="flex flex-col bg-white-bg py-8 overflow-hidden" id="about">
+    <div className="flex flex-col bg-white-bg py-8" id="about">
       <div className="box-content p-6 md:p-16 flex flex-col lg:flex-row gap-8 md:gap-24 justify-center items-center mb-16">
         <MyPhoto />
 
-        <div className="w-full max-w-3xl flex flex-col gap-6 md:gap-8 text-center md:text-left items-center md:items-start">
-          <h1 className="font-heading text-3xl md:text-5xl">
-            Hello, My Name is
-            <strong className="text-blue-main"> Adil Nibras Gazza</strong>
-          </h1>
+        <div className="w-full max-w-3xl flex flex-col gap-4 md:gap-6 text-center md:text-left items-center md:items-start">
+          <div className="flex flex-col gap-2">
+            <h1 className="font-heading text-3xl md:text-8xl">
+              <strong className="text-blue-main"> Adil Nibras Gazza</strong>
+            </h1>
+            <p className="text-4xl font-heading">
+              UI/UX DESIGNER | Front-end Developer
+            </p>
+          </div>
           <p className="font-p text-lg md:text-2xl">
             I'm an Information Technology student at Universitas Brawijaya with
             a strong enthusiasm for technology, currently focusing on Web
@@ -32,15 +36,9 @@ export function Hero() {
 
 function MyPhoto() {
   return (
-    // 4. Hapus 'hidden' agar tampil di mobile, sesuaikan ukuran container (w-56 h-80 di mobile)
     <div className="relative flex justify-center items-center w-48 h-72 sm:w-56 sm:h-80 md:w-72 md:h-144 mt-8 md:mt-0 mx-auto overflow-visible">
-      {/* 5. Sesuaikan ukuran icon dan padding di mobile agar proporsional */}
       <div className="absolute -top-3 -left-3 md:-left-8 z-0 bg-white p-2 md:p-4 border border-blue-main rounded-full shadow-lg transform -rotate-6 animate-bounce-kalem">
-        <img
-          src={tsLogo}
-          alt="TS Logo"
-          className="size-6 md:size-12"
-        />
+        <img src={tsLogo} alt="TS Logo" className="size-6 md:size-12" />
       </div>
 
       <div className="absolute z-5">
@@ -68,27 +66,15 @@ function MyPhoto() {
       </div>
 
       <div className="absolute -bottom-3 -right-1 md:-right-4 z-20 bg-white p-2 md:p-4 border border-blue-main rounded-full shadow-xl transform animate-bounce-kalem rotate-12">
-        <img
-          src={reactIcon}
-          alt="React Logo"
-          className="size-8 md:size-16"
-        />
+        <img src={reactIcon} alt="React Logo" className="size-8 md:size-16" />
       </div>
 
       <div className="absolute top-10 -right-5 md:-right-12 z-20 border border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
-        <img
-          src={java}
-          alt="Icon"
-          className="size-5 md:size-8"
-        />
+        <img src={java} alt="Icon" className="size-5 md:size-8" />
       </div>
 
       <div className="absolute bottom-6 -left-5 md:-left-12 z-20 border border-blue-main rounded-full bg-white p-2 md:p-4 shadow-md animate-bounce-kalem rotate-8">
-        <img
-          src={twLogo}
-          alt="Icon"
-          className="size-5 md:size-8"
-        />
+        <img src={twLogo} alt="Icon" className="size-5 md:size-8" />
       </div>
     </div>
   );
