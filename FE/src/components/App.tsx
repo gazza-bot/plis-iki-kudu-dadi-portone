@@ -8,13 +8,11 @@ import {
   AIAssistantWidget,
   Intro,
 } from ".";
-// import StatusForm from "./widgets/StatusForm";
 
 function App() {
   return (
     <>
       <div className="">
-        {/* <StatusForm isSuccess={false} isVisible={true}/> */}
         <Intro />
         <Navbar />
         <Hero />
