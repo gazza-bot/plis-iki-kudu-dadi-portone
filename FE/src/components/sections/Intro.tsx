@@ -1,6 +1,4 @@
-"use client";
-
-import { useRef, useLayoutEffect, useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import gsap from "gsap";
 import { Logo } from "../ui/Logo";
 
@@ -11,23 +9,22 @@ export function Intro() {
   const screen3Ref = useRef(null);
   const [showIntro, setShowIntro] = useState(true);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const ctx = gsap.context(() => {
-      gsap.set(screen2Ref.current, { xPercent: 100 });
-      gsap.set(screen3Ref.current, { yPercent: 100 });
+      gsap.set(screen2Ref.current, { xPercent: 100, force3D: true });
+      gsap.set(screen3Ref.current, { yPercent: 100, force3D: true });
 
       const tl = gsap.timeline({ defaults: { ease: "power3.inOut" } });
 
-      tl.addLabel("toScreen2", "+=1.5") // <- Screen 1 diam dulu 1.5 detik
-        .to(screen1Ref.current, { xPercent: -100, duration: 1 }, "toScreen2")
-        .to(screen2Ref.current, { xPercent: 0, duration: 2 }, "toScreen2")
+      tl.addLabel("toScreen2", "+=1.5")
+        .to(screen1Ref.current, { xPercent: -100, duration: 1, force3D: true }, "toScreen2")
+        .to(screen2Ref.current, { xPercent: 0, duration: 2, force3D: true }, "toScreen2")
         .to(
           screen2Ref.current,
-          { yPercent: -100, duration: 2 },
+          { yPercent: -100, duration: 2, force3D: true },
           "toScreen3+=0.6",
         )
-        .to(screen3Ref.current, { yPercent: 0, duration: 1 }, "toScreen3+=0.6")
-        // jeda sebentar logo "diam" sebelum collapse
+        .to(screen3Ref.current, { yPercent: 0, duration: 1, force3D: true }, "toScreen3+=0.6")
         .to(containerRef.current, {
           height: 0,
           duration: 0.8,
@@ -40,9 +37,12 @@ export function Intro() {
     return () => ctx.revert();
   }, []);
 
-  // lock scroll selama intro tampil, otomatis unlock pas selesai
-  useLayoutEffect(() => {
-    document.body.style.overflow = showIntro ? "hidden" : "";
+  useEffect(() => {
+    if (showIntro) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
 
     return () => {
       document.body.style.overflow = "";
@@ -55,11 +55,13 @@ export function Intro() {
     <div
       ref={containerRef}
       className="relative w-full h-dvh overflow-hidden bg-white-bg z-50"
+      style={{ willChange: "transform" }}
     >
       {/* Screen 1 - Nama */}
       <div
         ref={screen1Ref}
         className="bg-blue-main absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
+        style={{ willChange: "transform" }}
       >
         <h1 className="text-4xl md:text-9xl font-heading tracking-wide text-white font-bold">
           Adil Nibras Gazza
@@ -70,6 +72,7 @@ export function Intro() {
       <div
         ref={screen2Ref}
         className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex flex-col justify-center items-center gap-4"
+        style={{ willChange: "transform" }}
       >
         <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
           Tech Enthusiast
@@ -86,6 +89,7 @@ export function Intro() {
       <div
         ref={screen3Ref}
         className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
+        style={{ willChange: "transform" }}
       >
         <Logo
           variant="LogoText"

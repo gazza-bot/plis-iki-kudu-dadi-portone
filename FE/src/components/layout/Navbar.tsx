@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react";
-import ConnectForm from "../widgets/ConnectForm";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { Logo } from "../ui/Logo";
+
+const ConnectForm = lazy(() => import("../widgets/ConnectForm"));
 
 export function Navbar() {
   const [isMenuOpened, setMenuOpen] = useState<boolean>(false);
@@ -43,7 +44,7 @@ export function Navbar() {
             </li>
           </ul>
         </nav>
-        {isFormShowed && <ConnectForm handleClose={() => setFormShow(false)} />}
+        {isFormShowed && <Suspense fallback={null}><ConnectForm handleClose={() => setFormShow(false)} /></Suspense>}
         {/* Mobile Nav */}
         <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4 z-50">
           <Logo variant="LogoOnly" classLogo="text-blue-main" />

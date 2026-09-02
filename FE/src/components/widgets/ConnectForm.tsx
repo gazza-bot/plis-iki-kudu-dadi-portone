@@ -66,7 +66,7 @@ export default function ConnectForm({ handleClose }: FormProps) {
         }, 300);
       }, 2500);
 
-    } catch (error) {
+    } catch {
       setToast({ isVisible: true, isSuccess: false });
       
       setTimeout(() => {

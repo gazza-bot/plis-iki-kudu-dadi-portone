@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
-import { GitHubCalendar } from "react-github-calendar";
+import { useEffect, useState, lazy, Suspense } from "react";
+
+const GitHubCalendar = lazy(() => import("react-github-calendar").then(m => ({ default: m.GitHubCalendar })));
 // Mendefinisikan tipe data yang akan kita ambil dari API
 
 const customTheme = {
@@ -116,14 +117,16 @@ export function GithubStats({ username }: GithubStatsProps) {
           Grafik Kontribusi
         </h4>
         <div className="min-w-full flex justify-center">
-          <GitHubCalendar
-            username={username}
-            colorScheme="light"
-            blockSize={12}
-            blockMargin={4}
-            fontSize={12}
-            theme={customTheme}
-          />
+          <Suspense fallback={<div className="w-full h-35 bg-gray-100 rounded-xl animate-pulse" />}>
+            <GitHubCalendar
+              username={username}
+              colorScheme="light"
+              blockSize={12}
+              blockMargin={4}
+              fontSize={12}
+              theme={customTheme}
+            />
+          </Suspense>
         </div>
       </div>
     </div>
