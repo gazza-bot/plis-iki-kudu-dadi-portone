@@ -42,6 +42,7 @@ export function AIAssistantWidget() {
 
     try {
       const BASE_URL = import.meta.env.VITE_BASE_URL;
+      const BASE_URL = import.meta.env.VITE_BASE_URL;
 
       const response = await fetch(`${BASE_URL}/api/chat`, {
         method: "POST",
