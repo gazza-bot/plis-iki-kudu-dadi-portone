@@ -26,9 +26,7 @@ export function AIAssistantWidget() {
 
   // Kelola mount/unmount panel biar animasi keluar (mengecil) sempat kelihatan
   useEffect(() => {
-    if (isOpen) {
-      setShouldRender(true);
-    } else {
+    if (!isOpen) {
       const timeout = setTimeout(() => setShouldRender(false), 300);
       return () => clearTimeout(timeout);
     }
@@ -160,7 +158,7 @@ export function AIAssistantWidget() {
 
       {/* Floating Button*/}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => { if (!isOpen) setShouldRender(true); setIsOpen(!isOpen); }}
         className="group flex size-16 sm:size-20 items-center justify-center rounded-full bg-blue-main text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 hover:bg-white-bg hover:text-blue-main hover:shadow-md active:scale-95"
         aria-label="Toggle AI Assistant"
       >
