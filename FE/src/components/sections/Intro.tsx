@@ -1,4 +1,6 @@
-import { useRef, useEffect, useState } from "react";
+"use client";
+
+import { useRef, useLayoutEffect, useState } from "react";
 import gsap from "gsap";
 import { Logo } from "../ui/Logo";
 
@@ -33,6 +35,8 @@ function resetBodyStyles() {
 }
 
 function shouldShowIntro(): boolean {
+  // Always show intro in development for easier testing
+  if (import.meta.env.DEV) return true;
   if (hasSeenIntroSession()) return false;
   if (prefersReducedMotion()) return false;
   return true;
@@ -52,10 +56,16 @@ export function Intro() {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!showIntro) {
+      resetBodyStyles();
+      window.scrollTo(0, 0);
+      return;
+    }
+
     const ctx = gsap.context(() => {
-      gsap.set(screen2Ref.current, { xPercent: 100, force3D: true });
-      gsap.set(screen3Ref.current, { yPercent: 100, force3D: true });
+      gsap.set(screen2Ref.current, { xPercent: 100 });
+      gsap.set(screen3Ref.current, { yPercent: 100 });
 
       const tl = gsap.timeline({
         defaults: { ease: "power3.inOut" },
@@ -68,14 +78,15 @@ export function Intro() {
       timelineRef.current = tl;
 
       tl.addLabel("toScreen2", "+=1.5")
-        .to(screen1Ref.current, { xPercent: -100, duration: 1, force3D: true }, "toScreen2")
-        .to(screen2Ref.current, { xPercent: 0, duration: 2, force3D: true }, "toScreen2")
+        .to(screen1Ref.current, { xPercent: -100, duration: 1 }, "toScreen2")
+        .to(screen2Ref.current, { xPercent: 0, duration: 2 }, "toScreen2")
         .to(
           screen2Ref.current,
-          { yPercent: -100, duration: 2, force3D: true },
+          { yPercent: -100, duration: 2 },
           "toScreen3+=0.6",
         )
-        .to(screen3Ref.current, { yPercent: 0, duration: 1, force3D: true }, "toScreen3+=0.6")
+        .to(screen3Ref.current, { yPercent: 0, duration: 1 }, "toScreen3+=0.6")
+        // Use opacity + transform instead of height to avoid layout recalculation
         .to(containerRef.current, {
           opacity: 0,
           yPercent: -100,
@@ -95,11 +106,12 @@ export function Intro() {
     };
   }, [showIntro]);
 
-  useEffect(() => {
+  // Lock scroll while intro is visible, clean up on unmount
+  useLayoutEffect(() => {
     if (showIntro) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "";
+      resetBodyStyles();
     }
 
     return () => {
@@ -113,13 +125,11 @@ export function Intro() {
     <div
       ref={containerRef}
       className="relative w-full h-dvh overflow-hidden bg-white-bg z-50"
-      style={{ willChange: "transform" }}
     >
       {/* Screen 1 - Nama */}
       <div
         ref={screen1Ref}
         className="bg-blue-main absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
-        style={{ willChange: "transform" }}
         style={{ willChange: "transform" }}
       >
         <h1 className="text-4xl md:text-9xl font-heading tracking-wide text-white font-bold">
@@ -131,7 +141,6 @@ export function Intro() {
       <div
         ref={screen2Ref}
         className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex flex-col justify-center items-center gap-4"
-        style={{ willChange: "transform" }}
         style={{ willChange: "transform" }}
       >
         <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
@@ -150,7 +159,6 @@ export function Intro() {
         ref={screen3Ref}
         className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
         style={{ willChange: "transform" }}
-        style={{ willChange: "transform" }}
       >
         <Logo
           variant="LogoText"
@@ -161,4 +169,3 @@ export function Intro() {
     </div>
   );
 }
-

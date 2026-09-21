@@ -1,7 +1,8 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export function AIAssistantWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [shouldRender, setShouldRender] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([
     {
@@ -10,25 +11,26 @@ export function AIAssistantWidget() {
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
 
   const chatEndRef = useRef<HTMLDivElement>(null);
 
-  const scrollToBottom = useCallback(() => {
+  const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  };
 
   useEffect(() => {
     if (isOpen) {
       scrollToBottom();
     }
-  }, [isOpen, scrollToBottom]);
+  }, [messages, isOpen]);
 
+  // Kelola mount/unmount panel biar animasi keluar (mengecil) sempat kelihatan
   useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
+    if (!isOpen) {
+      const timeout = setTimeout(() => setShouldRender(false), 300);
+      return () => clearTimeout(timeout);
     }
-  }, [messages, isOpen, scrollToBottom]);
+  }, [isOpen]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +43,6 @@ export function AIAssistantWidget() {
     setLoading(true);
 
     try {
-      const BASE_URL = import.meta.env.VITE_BASE_URL;
       const BASE_URL = import.meta.env.VITE_BASE_URL;
 
       const response = await fetch(`${BASE_URL}/api/chat`, {
@@ -73,23 +74,12 @@ export function AIAssistantWidget() {
     }
   };
 
-  const handleToggle = () => {
-    if (!isOpen) {
-      setIsMounted(true);
-    }
-    setIsOpen(!isOpen);
-  };
-
-  const handleClose = () => {
-    setIsOpen(false);
-  };
-
   return (
     <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
-      {isMounted && (
+      {shouldRender && (
         <div
           className={`mb-4 w-[calc(100vw-3rem)] sm:w-96 origin-bottom-right rounded-2xl border border-gray-100 bg-white p-4 shadow-2xl transition-all duration-300 ease-out ${
-            isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0 pointer-events-none"
+            isOpen ? "scale-100 opacity-100" : "scale-0 opacity-0"
           }`}
         >
           <div className="flex items-center justify-between border-b border-gray-100 pb-3">
@@ -103,7 +93,7 @@ export function AIAssistantWidget() {
               </h3>
             </div>
             <button
-              onClick={handleClose}
+              onClick={() => setIsOpen(false)}
               className="rounded-lg p-1 text-gray-400 transition-colors hover:bg-gray-100 hover:text-gray-600"
               aria-label="Tutup AI Assistant"
             >
@@ -168,7 +158,7 @@ export function AIAssistantWidget() {
 
       {/* Floating Button*/}
       <button
-        onClick={handleToggle}
+        onClick={() => { if (!isOpen) setShouldRender(true); setIsOpen(!isOpen); }}
         className="group flex size-16 sm:size-20 items-center justify-center rounded-full bg-blue-main text-white shadow-lg shadow-blue-500/30 transition-all duration-300 hover:scale-110 hover:bg-white-bg hover:text-blue-main hover:shadow-md active:scale-95"
         aria-label="Toggle AI Assistant"
       >
