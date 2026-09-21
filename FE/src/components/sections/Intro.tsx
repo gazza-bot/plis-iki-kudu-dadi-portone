@@ -35,6 +35,8 @@ function resetBodyStyles() {
 }
 
 function shouldShowIntro(): boolean {
+  // Always show intro in development for easier testing
+  if (import.meta.env.DEV) return true;
   if (hasSeenIntroSession()) return false;
   if (prefersReducedMotion()) return false;
   return true;
