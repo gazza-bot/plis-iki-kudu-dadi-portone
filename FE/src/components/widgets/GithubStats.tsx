@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 
 const GitHubCalendar = lazy(() =>
   import("react-github-calendar").then((m) => ({ default: m.GitHubCalendar })),
@@ -22,11 +22,37 @@ interface GithubStatsProps {
 }
 
 export function GithubStats({ username }: GithubStatsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
+    return !("IntersectionObserver" in window);
+  });
   const [profile, setProfile] = useState<GitHubData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (inView) return;
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "300px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [inView]);
+
+  useEffect(() => {
+    if (!inView) return;
+
     const controller = new AbortController();
 
     const fetchGithubData = async () => {
@@ -54,15 +80,20 @@ export function GithubStats({ username }: GithubStatsProps) {
     fetchGithubData();
 
     return () => controller.abort();
-  }, [username]);
+  }, [username, inView]);
 
-  if (loading) {
-    return <SkeletonStats />;
+  if (!inView || loading) {
+    return (
+      <div ref={containerRef}>
+        <SkeletonStats />
+      </div>
+    );
   }
 
   if (error) {
     return (
       <div
+        ref={containerRef}
         className="border border-red-300 bg-red-50 p-5 text-red-700"
         role="alert"
       >
@@ -73,7 +104,7 @@ export function GithubStats({ username }: GithubStatsProps) {
 
   if (!profile) {
     return (
-      <div className="border border-ink/15 bg-paper p-5">
+      <div ref={containerRef} className="border border-ink/15 bg-paper p-5">
         <p className="font-p text-sm text-ink/70">
           No GitHub activity to show yet.
         </p>
@@ -82,7 +113,11 @@ export function GithubStats({ username }: GithubStatsProps) {
   }
 
   return (
-    <section className="border border-ink/15 bg-paper" aria-labelledby="github-title">
+    <section
+      ref={containerRef}
+      className="border border-ink/15 bg-paper"
+      aria-labelledby="github-title"
+    >
       <div className="grid gap-6 p-5 md:grid-cols-[auto_1fr_auto] md:items-center md:p-6">
         <h2 id="github-title" className="sr-only">
           GitHub activity

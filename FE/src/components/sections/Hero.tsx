@@ -1,7 +1,8 @@
 import { GithubStats } from "../widgets/GithubStats";
-import PhotoAing from "../../assets/PhotoAing.webp";
 import tsLogo from "../../assets/ts_logo.svg";
 import reactIcon from "../../assets/React-icon.svg";
+
+const photoAing = "/PhotoAing.webp";
 
 const stack = ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express.js"];
 
@@ -84,11 +85,12 @@ function MyPhoto() {
 
       <div className="relative z-10 border border-ink bg-paper p-2 shadow-editorial">
         <img
-          src={PhotoAing}
+          src={photoAing}
           alt="Adil Nibras Gazza"
-          width={2624}
-          height={3936}
+          width={768}
+          height={1152}
           fetchPriority="high"
+          decoding="async"
           className="aspect-[3/4] w-full bg-white-bg object-cover"
         />
       </div>

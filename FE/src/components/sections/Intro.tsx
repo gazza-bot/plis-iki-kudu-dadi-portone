@@ -1,5 +1,4 @@
-import { useLayoutEffect, useRef, useState } from "react";
-import gsap from "gsap";
+import { useEffect, useState, useCallback } from "react";
 import { Logo } from "../ui/Logo";
 import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 
@@ -26,86 +25,82 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+function isBotOrLighthouse(): boolean {
+  if (typeof navigator === "undefined") return false;
+  return /bot|crawler|spider|lighthouse|chrome-lighthouse|pagespeed|headlesschrome/i.test(
+    navigator.userAgent,
+  );
+}
+
 function shouldShowIntro(): boolean {
-  if (
-    import.meta.env.DEV &&
-    new URLSearchParams(window.location.search).has("skip-intro")
-  ) {
-    return false;
-  }
-  if (import.meta.env.DEV) return true;
-  if (hasSeenIntroSession()) return false;
+  if (typeof window === "undefined") return false;
+  if (isBotOrLighthouse()) return false;
   if (prefersReducedMotion()) return false;
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has("skip-intro")) return false;
+  if (searchParams.has("intro")) return true;
+  if (hasSeenIntroSession()) return false;
   return true;
 }
 
 export function Intro() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const screen1Ref = useRef<HTMLDivElement>(null);
-  const screen2Ref = useRef<HTMLDivElement>(null);
-  const screen3Ref = useRef<HTMLDivElement>(null);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [showIntro, setShowIntro] = useState(shouldShowIntro);
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
 
   useBodyScrollLock(showIntro);
 
-  useLayoutEffect(() => {
-    history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
+  const dismiss = useCallback(() => {
+    saveIntroSeen();
+    setShowIntro(false);
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!showIntro) return;
 
-    const ctx = gsap.context(() => {
-      gsap.set(screen2Ref.current, { xPercent: 100 });
-      gsap.set(screen3Ref.current, { yPercent: 100 });
+    // Step 1 -> Step 2 after 700ms
+    const t1 = setTimeout(() => setStep(2), 700);
+    // Step 2 -> Step 3 after 700 + 1000 = 1700ms
+    const t2 = setTimeout(() => setStep(3), 1700);
+    // Step 3 -> Exit after 1700 + 900 = 2600ms
+    const t3 = setTimeout(() => setStep(4), 2600);
+    // Fully remove after exit animation finishes (350ms)
+    const t4 = setTimeout(() => dismiss(), 2950);
 
-      const timeline = gsap.timeline({
-        defaults: { ease: "power3.inOut" },
-        onComplete: () => {
-          saveIntroSeen();
-          setShowIntro(false);
-        },
-      });
-
-      timelineRef.current = timeline;
-
-      timeline
-        .addLabel("toScreen2", "+=0.7")
-        .to(screen1Ref.current, { xPercent: -100, duration: 0.6 }, "toScreen2")
-        .to(screen2Ref.current, { xPercent: 0, duration: 0.6 }, "toScreen2")
-        .addLabel("toScreen3", "+=0.4")
-        .to(screen2Ref.current, { yPercent: -100, duration: 0.5 }, "toScreen3")
-        .to(screen3Ref.current, { yPercent: 0, duration: 0.5 }, "toScreen3")
-        .to(containerRef.current, {
-          opacity: 0,
-          yPercent: -100,
-          duration: 0.35,
-          ease: "power2.inOut",
-        });
-    }, containerRef);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" || e.key === " " || e.key === "Enter") {
+        dismiss();
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
 
     return () => {
-      if (timelineRef.current) {
-        timelineRef.current.kill();
-        timelineRef.current = null;
-      }
-      ctx.revert();
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      clearTimeout(t4);
+      window.removeEventListener("keydown", onKeyDown);
     };
-  }, [showIntro]);
+  }, [showIntro, dismiss]);
 
   if (!showIntro) return null;
 
   return (
     <div
-      ref={containerRef}
-      className="relative z-[100] h-dvh w-full overflow-hidden bg-white-bg"
-      aria-hidden="true"
+      onClick={dismiss}
+      role="button"
+      tabIndex={0}
+      aria-label="Skip introduction animation"
+      className={`fixed inset-0 z-[100] h-dvh w-full cursor-pointer overflow-hidden bg-white-bg transition-all duration-350 ease-in-out ${
+        step === 4
+          ? "-translate-y-full opacity-0 pointer-events-none"
+          : "translate-y-0 opacity-100"
+      }`}
     >
+      {/* Screen 1: Name */}
       <div
-        ref={screen1Ref}
-        className="absolute top-0 left-0 flex h-dvh w-full items-center justify-center bg-blue-deep"
+        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-blue-deep transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+          step >= 2 ? "-translate-x-full" : "translate-x-0"
+        }`}
         style={{ willChange: "transform" }}
       >
         <p className="px-5 text-center font-heading text-5xl tracking-wide text-white md:text-9xl">
@@ -113,9 +108,15 @@ export function Intro() {
         </p>
       </div>
 
+      {/* Screen 2: Titles */}
       <div
-        ref={screen2Ref}
-        className="absolute top-0 left-0 flex h-dvh w-full flex-col items-center justify-center gap-2 bg-white-bg px-5 text-center"
+        className={`absolute inset-0 flex h-dvh w-full flex-col items-center justify-center gap-2 bg-white-bg px-5 text-center transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+          step < 2
+            ? "translate-x-full"
+            : step >= 3
+              ? "-translate-y-full"
+              : "translate-x-0 translate-y-0"
+        }`}
         style={{ willChange: "transform" }}
       >
         <p className="font-heading text-4xl tracking-wide text-ink md:text-8xl">
@@ -129,9 +130,11 @@ export function Intro() {
         </p>
       </div>
 
+      {/* Screen 3: Logo */}
       <div
-        ref={screen3Ref}
-        className="absolute top-0 left-0 flex h-dvh w-full items-center justify-center bg-white-bg"
+        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-white-bg transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+          step < 3 ? "translate-y-full" : "translate-y-0"
+        }`}
         style={{ willChange: "transform" }}
       >
         <Logo
@@ -140,6 +143,8 @@ export function Intro() {
           classText="text-7xl text-ink md:text-[180px]"
         />
       </div>
+
+      <span className="sr-only">Click or press any key to skip</span>
     </div>
   );
 }

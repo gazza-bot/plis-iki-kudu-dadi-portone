@@ -7,19 +7,6 @@ const AIAssistantWidget = lazy(() =>
   import("./widgets/AIAssistantWidget").then((m) => ({ default: m.AIAssistantWidget })),
 );
 
-function IntroFallback() {
-  return (
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-white-bg"
-      role="status"
-      aria-live="polite"
-    >
-      <span className="sr-only">Loading portfolio</span>
-      <div className="size-4 animate-pulse rounded-full bg-blue-main" />
-    </div>
-  );
-}
-
 function App() {
   return (
     <>
@@ -30,7 +17,7 @@ function App() {
         Skip to content
       </a>
 
-      <Suspense fallback={<IntroFallback />}>
+      <Suspense fallback={null}>
         <Intro />
       </Suspense>
 

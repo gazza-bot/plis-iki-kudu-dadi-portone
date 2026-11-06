@@ -39,23 +39,29 @@
     <!-- Canonical -->
     <link rel="canonical" href="https://adil-is.online/" />
 
-    <!-- Preconnect to API's and Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preload Critical Local Fonts -->
     <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
-    />
-    <link
-      rel="preconnect"
-      href="https://grand-victory-production-caa5.up.railway.app"
+      rel="preload"
+      href="/fonts/bebas-neue-latin.woff2"
+      as="font"
+      type="font/woff2"
       crossorigin
     />
-    <link rel="preconnect" href="https://api.github.com" crossorigin />
     <link
-      rel="preconnect"
-      href="https://github-contributions-api.jogruber.de"
+      rel="preload"
+      href="/fonts/plus-jakarta-sans-latin.woff2"
+      as="font"
+      type="font/woff2"
       crossorigin
+    />
+
+    <!-- Preload Critical Hero Image -->
+    <link
+      rel="preload"
+      href="/PhotoAing.webp"
+      as="image"
+      type="image/webp"
+      fetchpriority="high"
     />
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
