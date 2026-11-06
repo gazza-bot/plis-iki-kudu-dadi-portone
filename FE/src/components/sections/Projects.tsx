@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import { CardGroup } from "../ui/CardGroup";
 import { Card, CardImage, CardTitle, CardButton } from "../ui/Card";
 import { Badge } from "../ui/Badge";
-import DetailsProject from "../widgets/DetailsProject";
+
+const DetailsProject = lazy(() => import("../widgets/DetailsProject"));
 
 export interface Project {
   id: number;
@@ -98,10 +99,12 @@ function ProjectShowcase() {
       </div>
 
       {selectedProject && (
-        <DetailsProject 
-          project={selectedProject} 
-          onClose={() => setSelectedProject(null)} // Kirim fungsi untuk menutup modal
-        />
+        <Suspense fallback={null}>
+          <DetailsProject 
+            project={selectedProject} 
+            onClose={() => setSelectedProject(null)}
+          />
+        </Suspense>
       )}
     </>
   );
