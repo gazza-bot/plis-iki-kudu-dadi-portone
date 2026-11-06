@@ -1,26 +1,12 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 
-const GitHubCalendar = lazy(() => import("react-github-calendar").then(m => ({ default: m.GitHubCalendar })));
-// Mendefinisikan tipe data yang akan kita ambil dari API
+const GitHubCalendar = lazy(() =>
+  import("react-github-calendar").then((m) => ({ default: m.GitHubCalendar })),
+);
 
 const customTheme = {
-  // Mode Terang: dari abu-abu muda ke biru terang (#2185D5)
-  light: [
-    "#ebedf0", // Level 0: Kosong (bawaan GitHub)
-    "#bce0fd", // Level 1: Sedikit aktif (Biru sangat pudar)
-    "#89c6fa", // Level 2: Lumayan aktif (Biru muda)
-    "#56a9f6", // Level 3: Aktif (Biru sedang)
-    "#2185D5", // Level 4: Sangat aktif (Warna utamamu)
-  ],
-
-  // Mode Gelap: dari abu-abu gelap ke biru terang (#2185D5)
-  dark: [
-    "#161b22", // Level 0: Kosong (bawaan GitHub dark mode)
-    "#0d3555", // Level 1: Sedikit aktif (Biru sangat gelap)
-    "#144f80", // Level 2: Lumayan aktif (Biru gelap)
-    "#1a6aab", // Level 3: Aktif (Biru sedang gelap)
-    "#2185D5", // Level 4: Sangat aktif (Warna utamamu)
-  ],
+  light: ["#ebedf0", "#bce0fd", "#89c6fa", "#56a9f6", "#2185d5"],
+  dark: ["#161b22", "#0d3555", "#144f80", "#1a6aab", "#2185d5"],
 };
 
 interface GitHubData {
@@ -32,7 +18,7 @@ interface GitHubData {
 }
 
 interface GithubStatsProps {
-  username: string; // Username GitHub kamu
+  username: string;
 }
 
 export function GithubStats({ username }: GithubStatsProps) {
@@ -41,11 +27,13 @@ export function GithubStats({ username }: GithubStatsProps) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     const fetchGithubData = async () => {
       try {
-        const response = await fetch(
-          `https://api.github.com/users/${username}`,
-        );
+        const response = await fetch(`https://api.github.com/users/${username}`, {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           throw new Error("Gagal mengambil data dari GitHub");
@@ -54,13 +42,18 @@ export function GithubStats({ username }: GithubStatsProps) {
         const data: GitHubData = await response.json();
         setProfile(data);
       } catch (err) {
+        if (err instanceof DOMException && err.name === "AbortError") return;
         setError(err instanceof Error ? err.message : "Terjadi kesalahan");
       } finally {
-        setLoading(false);
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
       }
     };
 
     fetchGithubData();
+
+    return () => controller.abort();
   }, [username]);
 
   if (loading) {
@@ -69,55 +62,89 @@ export function GithubStats({ username }: GithubStatsProps) {
 
   if (error) {
     return (
-      <div className="p-4 bg-red-50 text-red-600 rounded-xl border border-red-200">
-        <p>Error: {error}</p>
+      <div
+        className="border border-red-300 bg-red-50 p-5 text-red-700"
+        role="alert"
+      >
+        <p className="font-p text-sm">GitHub activity is unavailable right now.</p>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="border border-ink/15 bg-paper p-5">
+        <p className="font-p text-sm text-ink/70">
+          No GitHub activity to show yet.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="w-full p-6 bg-white rounded-2xl shadow-sm border border-gray-100 transition-all hover:shadow-md">
-      {/* Bagian Header: Info Repositori */}
-      <div className="flex items-center gap-4 mb-8 pb-6 border-b border-gray-100">
-        {profile?.avatar_url && (
+    <section className="border border-ink/15 bg-paper" aria-labelledby="github-title">
+      <div className="grid gap-6 p-5 md:grid-cols-[auto_1fr_auto] md:items-center md:p-6">
+        <h2 id="github-title" className="sr-only">
+          GitHub activity
+        </h2>
+
+        <div className="flex items-center gap-4">
           <img
             src={profile.avatar_url}
-            alt={`Avatar ${username}`}
-            className="size-10 md:size-20 rounded-full border-4 border-blue-main"
+            alt={`Avatar GitHub ${username}`}
+            width={80}
+            height={80}
+            loading="lazy"
+            className="size-16 rounded-full border border-ink/15 object-cover"
           />
-        )}
-        <div>
-          <h3 className="text-xs md:text-2xl font-bold text-gray-800">
-            @{username} | {profile?.name}
-          </h3>
-          <div className="flex gap-4 mt-2 text-sm text-gray-600">
-            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
-              <span className="font-bold text-white text-[12px] md:text-[16px]">
-                {profile?.public_repos}
-              </span>
-              <span className="text-white-bg text-[12px] md:text-[16px]">
-                Repositori
-              </span>
-            </div>
-            <div className="flex flex-col items-center p-2 bg-blue-main rounded-lg min-w-10 md:min-w-20">
-              <span className="font-bold text-white text-[12px] md:text-[16px]">
-                {profile?.followers}
-              </span>
-              <span className="text-white-bg text-[12px] md:text-[16px]">
-                Followers
-              </span>
-            </div>
+          <div>
+            <h3 className="font-heading text-2xl uppercase tracking-tight text-ink">
+              @{username}
+            </h3>
+            <p className="font-p text-sm text-ink/70">{profile.name}</p>
           </div>
         </div>
+
+        <dl className="flex gap-6 md:justify-self-center">
+          <div className="border-l border-ink/15 pl-4">
+            <dt className="font-p text-[10px] uppercase tracking-[0.16em] text-ink/70">
+              Repositories
+            </dt>
+            <dd className="font-heading text-3xl text-blue-deep">
+              {profile.public_repos}
+            </dd>
+          </div>
+          <div className="border-l border-ink/15 pl-4">
+            <dt className="font-p text-[10px] uppercase tracking-[0.16em] text-ink/70">
+              Followers
+            </dt>
+            <dd className="font-heading text-3xl text-blue-deep">
+              {profile.followers}
+            </dd>
+          </div>
+        </dl>
+
+        <a
+          href={`https://github.com/${username}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center border border-ink/25 px-4 py-2.5 font-p text-[11px] uppercase tracking-[0.16em] text-ink transition-colors hover:border-ink hover:bg-white"
+        >
+          Open GitHub
+        </a>
       </div>
 
-      {/* Bagian Kalender Kontribusi */}
-      <div className="overflow-x-auto pb-4">
-        <h4 className="text-sm font-semibold text-blue-main mb-4">
-          Grafik Kontribusi
-        </h4>
-        <div className="min-w-full flex justify-center">
-          <Suspense fallback={<div className="w-full h-35 bg-gray-100 rounded-xl animate-pulse" />}>
+      <div className="border-t border-ink/10 p-5 md:p-6">
+        <div className="flex items-center justify-between gap-4">
+          <p className="font-p text-[11px] uppercase tracking-[0.18em] text-ink/70">
+            Contribution activity
+          </p>
+          <p className="font-p text-[11px] text-ink/70">Public profile</p>
+        </div>
+        <div className="mt-4 overflow-x-auto pb-2">
+          <Suspense
+            fallback={<div className="h-28 w-full animate-pulse bg-white-bg" />}
+          >
             <GitHubCalendar
               username={username}
               colorScheme="light"
@@ -129,31 +156,25 @@ export function GithubStats({ username }: GithubStatsProps) {
           </Suspense>
         </div>
       </div>
-    </div>
+    </section>
   );
-};
+}
 
 function SkeletonStats() {
   return (
-    <div className="max-w-4xl w-full mx-auto p-6 bg-white rounded-2xl shadow-sm border border-gray-100 animate-pulse">
-      <div className="flex items-center gap-6 mb-8 pb-6 border-b border-gray-100">
-        <div className="w-20 h-20 rounded-full bg-gray-200 border-4 border-gray-50 shrink-0"></div>
-
+    <div
+      className="animate-pulse border border-ink/15 bg-paper p-5 md:p-6"
+      aria-hidden="true"
+    >
+      <div className="flex items-center gap-4">
+        <div className="size-16 rounded-full bg-white-bg" />
         <div className="flex flex-col gap-3">
-          <div className="h-7 w-40 bg-gray-200 rounded-md"></div>
-
-          <div className="flex gap-4">
-            <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
-            <div className="h-14 w-20 bg-gray-200 rounded-lg"></div>
-          </div>
+          <div className="h-5 w-40 bg-white-bg" />
+          <div className="h-4 w-24 bg-white-bg" />
         </div>
       </div>
-
-      <div className="overflow-hidden pb-4">
-        <div className="h-4 w-32 bg-gray-200 rounded-md mb-6"></div>
-
-        <div className="w-full h-35 bg-gray-100 rounded-xl"></div>
-      </div>
+      <div className="mt-6 h-4 w-32 bg-white-bg" />
+      <div className="mt-4 h-28 w-full bg-white-bg" />
     </div>
   );
 }

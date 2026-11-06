@@ -1,55 +1,68 @@
-import { Card } from "../ui/Card";
-import { CardGroup } from "../ui/CardGroup";
-import roket from "/src/assets/roket.svg";
-import target from '/src/assets/target.svg';
-import lamp from '/src/assets/lamp.svg'
+import { useReveal } from "../../hooks/useReveal";
+
+const targetsData = [
+  {
+    text: "Kerja Efisien",
+    desc: "Sebagai developer, saya memastikan produk dirancang dengan sebaik-baiknya. Saya meriset kebutuhan dan risiko agar kesalahan bisa ditekan sejak awal.",
+  },
+  {
+    text: "Target Jelas",
+    desc: "Target yang jelas memudahkan perencanaan dan membuat pelaksanaan lebih rapi. Setiap tugas punya arah, sehingga hasil akhirnya maksimal.",
+  },
+  {
+    text: "Terus Berkembang",
+    desc: "Saya mengikuti perkembangan teknologi dan berkomitmen untuk terus belajar agar bisa memberi solusi yang relevan dan efisien di setiap proyek.",
+  },
+];
 
 export function MyTargets() {
-  const targetsData = [
-    {
-      img: roket,
-      text: "Kerja Efisien",
-      desc: "Sebagai Developer, Saya memastikan produk yang saya buat dirancang dengan sebaik baiknya. Meriset segala hal agar tidak terjadi kesalahan dalam produk.",
-    },
-    {
-      img: target,
-      text: "Target Jelas",
-      desc: "Target yang jelas membawakan pada perencanaan yang mudah dan Pelaksaann yang rapi. Membuat Semua tugas terselesaikan dengan baik dan outputnya maksimal."
-    },
-    {
-      img: lamp,
-      text: "Terus Berkembang",
-      desc: "Selalu mengikuti perkembangan teknologi. Saya berkomitmen untuk terus belajar agar dapat memberikan solusi yang modern, relevan, dan efisien pada setiap proyek."
-    }
-
-  ];
+  const headingRef = useReveal<HTMLDivElement>();
+  const listRef = useReveal<HTMLOListElement>(120);
 
   return (
-    <div className="bg-white-bg flex flex-col min-h-screen gap-8 items-center justify-center py-16 px-4">
-      <h2 className="flex justify-center font-heading text-4xl md:text-6xl lg:text-8xl">
-        My Targets
-      </h2>
-      <CardGroup className="justify-center! w-full!">
-        {targetsData.map((target) => {
-          return (
-            <Card key={target.text}>
-              <div className="flex flex-col px-4 py-8 gap-4">
-                <div className="flex flex-row items-center gap-4">
-                  <img
-                    src={target.img}
-                    alt={target.text}
-                    className="size-8"
-                  />
-                  <p className="font-heading text-2xl md:text-3xl w-full">
-                    {target.text}
-                  </p>
-                </div>
-                <p className="font-p text-base md:text-xl">{target.desc}</p>
+    <section className="border-b border-ink/10 bg-white-bg py-20 md:py-28">
+      <div className="mx-auto grid max-w-7xl gap-12 px-5 md:px-8 lg:grid-cols-12 lg:gap-8">
+        <div
+          ref={headingRef}
+          className="lg:sticky lg:top-28 lg:col-span-4 lg:self-start"
+        >
+          <p className="font-p text-[11px] uppercase tracking-[0.2em] text-blue-deep">
+            02 / How I work
+          </p>
+          <h2 className="mt-4 font-heading text-[clamp(3rem,7vw,5rem)] leading-[0.85] tracking-tight text-ink">
+            MY
+            <br />
+            <span className="text-blue-main">TARGETS</span>
+          </h2>
+          <p className="mt-5 max-w-sm font-p text-base leading-relaxed text-ink/70">
+            Tiga prinsip yang saya pegang saat merancang dan membangun produk.
+          </p>
+        </div>
+
+        <ol
+          ref={listRef}
+          className="divide-y divide-ink/15 border-y border-ink/15 lg:col-span-8"
+        >
+          {targetsData.map((target, index) => (
+            <li
+              key={target.text}
+              className="grid gap-4 py-8 md:grid-cols-[72px_1fr] md:py-10"
+            >
+              <span className="font-heading text-4xl text-blue-main">
+                0{index + 1}
+              </span>
+              <div>
+                <h3 className="font-heading text-3xl tracking-tight text-ink">
+                  {target.text}
+                </h3>
+                <p className="mt-2 max-w-2xl font-p text-base leading-relaxed text-ink/70">
+                  {target.desc}
+                </p>
               </div>
-            </Card>
-          );
-        })}
-      </CardGroup>
-    </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
   );
 }

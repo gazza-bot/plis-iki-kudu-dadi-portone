@@ -1,8 +1,7 @@
-"use client";
-
-import { useRef, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { Logo } from "../ui/Logo";
+import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 
 const SESSION_KEY = "hasSeenIntro";
 
@@ -27,15 +26,13 @@ function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-function resetBodyStyles() {
-  document.body.style.overflow = "";
-  document.body.style.position = "";
-  document.body.style.top = "";
-  document.body.style.width = "";
-}
-
 function shouldShowIntro(): boolean {
-  // Always show intro in development for easier testing
+  if (
+    import.meta.env.DEV &&
+    new URLSearchParams(window.location.search).has("skip-intro")
+  ) {
+    return false;
+  }
   if (import.meta.env.DEV) return true;
   if (hasSeenIntroSession()) return false;
   if (prefersReducedMotion()) return false;
@@ -43,31 +40,28 @@ function shouldShowIntro(): boolean {
 }
 
 export function Intro() {
-  const containerRef = useRef(null);
-  const screen1Ref = useRef(null);
-  const screen2Ref = useRef(null);
-  const screen3Ref = useRef(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const screen1Ref = useRef<HTMLDivElement>(null);
+  const screen2Ref = useRef<HTMLDivElement>(null);
+  const screen3Ref = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [showIntro, setShowIntro] = useState(shouldShowIntro);
 
-  // Force scroll to top on mount, prevent browser scroll restoration
+  useBodyScrollLock(showIntro);
+
   useLayoutEffect(() => {
     history.scrollRestoration = "manual";
     window.scrollTo(0, 0);
   }, []);
 
   useLayoutEffect(() => {
-    if (!showIntro) {
-      resetBodyStyles();
-      window.scrollTo(0, 0);
-      return;
-    }
+    if (!showIntro) return;
 
     const ctx = gsap.context(() => {
       gsap.set(screen2Ref.current, { xPercent: 100 });
       gsap.set(screen3Ref.current, { yPercent: 100 });
 
-      const tl = gsap.timeline({
+      const timeline = gsap.timeline({
         defaults: { ease: "power3.inOut" },
         onComplete: () => {
           saveIntroSeen();
@@ -75,24 +69,20 @@ export function Intro() {
         },
       });
 
-      timelineRef.current = tl;
+      timelineRef.current = timeline;
 
-      tl.addLabel("toScreen2", "+=1.5")
-        .to(screen1Ref.current, { xPercent: -100, duration: 1 }, "toScreen2")
-        .to(screen2Ref.current, { xPercent: 0, duration: 2 }, "toScreen2")
-        .to(
-          screen2Ref.current,
-          { yPercent: -100, duration: 2 },
-          "toScreen3+=0.6",
-        )
-        .to(screen3Ref.current, { yPercent: 0, duration: 1 }, "toScreen3+=0.6")
-        // Use opacity + transform instead of height to avoid layout recalculation
+      timeline
+        .addLabel("toScreen2", "+=0.7")
+        .to(screen1Ref.current, { xPercent: -100, duration: 0.6 }, "toScreen2")
+        .to(screen2Ref.current, { xPercent: 0, duration: 0.6 }, "toScreen2")
+        .addLabel("toScreen3", "+=0.4")
+        .to(screen2Ref.current, { yPercent: -100, duration: 0.5 }, "toScreen3")
+        .to(screen3Ref.current, { yPercent: 0, duration: 0.5 }, "toScreen3")
         .to(containerRef.current, {
           opacity: 0,
           yPercent: -100,
-          duration: 0.8,
+          duration: 0.35,
           ease: "power2.inOut",
-          delay: 0.8,
         });
     }, containerRef);
 
@@ -102,20 +92,6 @@ export function Intro() {
         timelineRef.current = null;
       }
       ctx.revert();
-      resetBodyStyles();
-    };
-  }, [showIntro]);
-
-  // Lock scroll while intro is visible, clean up on unmount
-  useLayoutEffect(() => {
-    if (showIntro) {
-      document.body.style.overflow = "hidden";
-    } else {
-      resetBodyStyles();
-    }
-
-    return () => {
-      resetBodyStyles();
     };
   }, [showIntro]);
 
@@ -124,46 +100,44 @@ export function Intro() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-dvh overflow-hidden bg-white-bg z-50"
+      className="relative z-[100] h-dvh w-full overflow-hidden bg-white-bg"
+      aria-hidden="true"
     >
-      {/* Screen 1 - Nama */}
       <div
         ref={screen1Ref}
-        className="bg-blue-main absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
+        className="absolute top-0 left-0 flex h-dvh w-full items-center justify-center bg-blue-deep"
         style={{ willChange: "transform" }}
       >
-        <h1 className="text-4xl md:text-9xl font-heading tracking-wide text-white font-bold">
+        <p className="px-5 text-center font-heading text-5xl tracking-wide text-white md:text-9xl">
           Adil Nibras Gazza
-        </h1>
+        </p>
       </div>
 
-      {/* Screen 2 - Role */}
       <div
         ref={screen2Ref}
-        className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex flex-col justify-center items-center gap-4"
+        className="absolute top-0 left-0 flex h-dvh w-full flex-col items-center justify-center gap-2 bg-white-bg px-5 text-center"
         style={{ willChange: "transform" }}
       >
-        <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
+        <p className="font-heading text-4xl tracking-wide text-ink md:text-8xl">
           Tech Enthusiast
-        </h1>
-        <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
+        </p>
+        <p className="font-heading text-4xl tracking-wide text-ink md:text-8xl">
           Frontend Developer
-        </h1>
-        <h1 className="text-3xl md:text-9xl font-heading tracking-wide text-blue-main font-bold">
+        </p>
+        <p className="font-heading text-4xl tracking-wide text-blue-main md:text-8xl">
           UI/UX Designer
-        </h1>
+        </p>
       </div>
 
-      {/* Screen 3 - Logo */}
       <div
         ref={screen3Ref}
-        className="bg-white-bg absolute top-0 left-0 w-full h-dvh flex justify-center items-center"
+        className="absolute top-0 left-0 flex h-dvh w-full items-center justify-center bg-white-bg"
         style={{ willChange: "transform" }}
       >
         <Logo
           variant="LogoText"
-          classLogo="size-24 md:size-48 lg:size-72 text-blue-main"
-          classText="text-blue-main text-8xl md:text-[192px] lg:text-[248px]"
+          classLogo="size-20 text-ink md:size-48"
+          classText="text-7xl text-ink md:text-[180px]"
         />
       </div>
     </div>

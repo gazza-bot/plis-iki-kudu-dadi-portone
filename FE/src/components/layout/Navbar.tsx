@@ -1,128 +1,206 @@
-import { useState, useEffect, lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { Logo } from "../ui/Logo";
+import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 
 const ConnectForm = lazy(() => import("../widgets/ConnectForm"));
 
+const navItems = [
+  { label: "Projects", href: "#projects" },
+  { label: "About", href: "#about" },
+  { label: "Contact", href: "#contact" },
+];
+
 export function Navbar() {
-  const [isMenuOpened, setMenuOpen] = useState<boolean>(false);
-  const [isFormShowed, setFormShow] = useState<boolean>(false);
+  const [isMenuOpened, setMenuOpen] = useState(false);
+  const [isFormShowed, setFormShow] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const wasOpenRef = useRef(false);
+
+  useBodyScrollLock(isMenuOpened);
 
   useEffect(() => {
     if (isMenuOpened) {
-      const scrollY = window.scrollY;
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.width = "100%";
-      document.body.style.overflow = "hidden";
+      wasOpenRef.current = true;
+      closeButtonRef.current?.focus();
 
-      return () => {
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.width = "";
-        document.body.style.overflow = "";
-        window.scrollTo(0, scrollY);
+      const handleKeyDown = (event: KeyboardEvent) => {
+        if (event.key === "Escape") {
+          setMenuOpen(false);
+        }
       };
+
+      document.addEventListener("keydown", handleKeyDown);
+      return () => document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    if (wasOpenRef.current) {
+      wasOpenRef.current = false;
+      menuButtonRef.current?.focus();
     }
   }, [isMenuOpened]);
 
+  const openForm = () => {
+    setMenuOpen(false);
+    setFormShow(true);
+  };
+
   return (
-    <div className="bg-white-bg">
-      <header className="h-24">
-        {/* Desktop Nav */}
-        <nav className="fixed items-center px-12 py-3 md:px-24 md:py-6 w-full bg-white-bg z-50 shadow-sm hidden md:flex md:flex-row">
-          <ul className="flex flex-row justify-between gap-10 items-center w-full ">
-            <li className="relative font-p text-2xl text-blue-main transition-all duration-300 ease-in-out after:absolute hover:after:bg-blue-main after:bottom-0 after:left-0 after:w-0 after:content-[''] after:h-0.5 hover:after:w-full after:transition-all after:duration-500">
-              <a href="#projects">Projects</a>
-            </li>
-            <li className="relative font-p text-2xl text-blue-main transition-all duration-300 ease-in-out after:absolute hover:after:bg-blue-main after:bottom-0 after:left-0 after:w-0 after:content-[''] after:h-0.5 hover:after:w-full after:transition-all after:duration-500">
-              <a href="#about">About</a>
-            </li>
-            <li className="relative bg-blue-main px-4 py-2 text-white-bg font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
-              <button onClick={() => setFormShow(!isFormShowed)}>
-                Let's Connect
-              </button>
-            </li>
-          </ul>
-        </nav>
-        {isFormShowed && <Suspense fallback={null}><ConnectForm handleClose={() => setFormShow(false)} /></Suspense>}
-        {/* Mobile Nav */}
-        <div className="flex fixed bg-white-bg shadow-sm flex-row justify-between w-full md:hidden items-center h-24 px-4 z-50">
-          <Logo variant="LogoOnly" classLogo="text-blue-main" />
-          <button onClick={() => setMenuOpen(!isMenuOpened)}>
+    <>
+      <header className="sticky top-0 z-50 border-b border-ink/10 bg-white-bg">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 md:h-24 md:px-8">
+          <a
+            href="#top"
+            className="flex items-center gap-2"
+            aria-label="Adildev, back to top"
+          >
+            <Logo
+              variant="LogoText"
+              classLogo="size-8 text-ink"
+              classText="text-xl md:text-2xl text-ink"
+            />
+          </a>
+
+          <nav className="hidden md:block" aria-label="Primary">
+            <ul className="flex items-center gap-8">
+              {navItems.map((item) => (
+                <li key={item.href}>
+                  <a
+                    href={item.href}
+                    className="relative font-p text-xs uppercase tracking-[0.18em] text-ink/70 transition-colors after:absolute after:-bottom-1 after:left-0 after:h-px after:w-0 after:bg-blue-deep after:transition-all after:duration-300 hover:text-ink hover:after:w-full"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+              <li>
+                <button
+                  type="button"
+                  onClick={openForm}
+                  aria-haspopup="dialog"
+                  className="inline-flex items-center border border-ink bg-ink px-4 py-2.5 font-p text-xs uppercase tracking-[0.18em] text-white-bg transition-colors hover:border-blue-deep hover:bg-blue-deep"
+                >
+                  Send a message
+                </button>
+              </li>
+            </ul>
+          </nav>
+
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={() => setMenuOpen(true)}
+            className="grid size-11 place-items-center border border-ink/20 text-ink md:hidden"
+            aria-expanded={isMenuOpened}
+            aria-controls="mobile-menu"
+            aria-label="Open menu"
+          >
             <svg
-              className="text-blue-main"
-              width="32px"
-              height="32px"
+              width="24"
+              height="24"
               viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              aria-hidden="true"
             >
-              <path d="M3 5h18v1H3zm0 8h18v-1H3zm0 7h18v-1H3z" />
-              <path fill="none" d="M0 0h24v24H0z" />
+              <path d="M4 7h16M4 12h16M4 17h16" />
             </svg>
           </button>
         </div>
 
-        {/* Mobile Menu Overlay */}
         <div
-          className={`fixed inset-0 bg-blue-main flex flex-col justify-center items-center overflow-auto transition-all duration-500 ease-in-out z-50 ${
-            isMenuOpened ? "max-h-full" : "max-h-0"
-          }`}
+          id="mobile-menu"
+          className={`${isMenuOpened ? "fixed" : "hidden"} inset-0 z-50 bg-ink text-white-bg md:hidden`}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
         >
-          <div className="absolute top-5 left-0 right-0 flex flex-row justify-between items-center px-12 py-2 h-24 z-50">
-            <span className="z-50 font-heading font-bold text-white-bg tracking-tighter text-2xl">
-              ADILDEV
-            </span>
+          <div className="flex h-20 items-center justify-between px-5">
+            <Logo
+              variant="LogoText"
+              classLogo="size-8 text-white-bg"
+              classText="text-xl text-white-bg"
+            />
             <button
-              onClick={() => setMenuOpen(!isMenuOpened)}
-              className="text-2xl font-bold text-white-bg"
+              ref={closeButtonRef}
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              className="grid size-11 place-items-center border border-white/25 text-white-bg"
+              aria-label="Close menu"
             >
-              X
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                aria-hidden="true"
+              >
+                <path d="M6 6l12 12M18 6L6 18" />
+              </svg>
             </button>
           </div>
-          <ul className="flex flex-col gap-16 items-center z-50">
-            <li className="font-p text-white-bg text-2xl">
-              <button onClick={() => setMenuOpen(!isMenuOpened)}>
-                <a href="#projects">Projects</a>
-              </button>
-            </li>
-            <li className="font-p text-white-bg text-2xl">
-              <button onClick={() => setMenuOpen(!isMenuOpened)}>
-                <a href="#about">About</a>
-              </button>
-            </li>
-            <li className="relative z-50 bg-white-bg px-4 py-2 text-blue-main font-p text-2xl transition-all duration-300 after:absolute hover:after:bg-white-bg after:bottom-2 after:left-2 after:w-0 after:content-[''] after:h-0.5 hover:after:w-9/10 after:transition-all after:duration-500">
+
+          <nav
+            className="flex h-[calc(100dvh-5rem)] flex-col justify-between px-5 pb-10"
+            aria-label="Mobile"
+          >
+            <ul className="flex flex-col pt-4">
+              {navItems.map((item, index) => (
+                <li key={item.href} className="border-b border-white/15">
+                  <a
+                    href={item.href}
+                    onClick={() => setMenuOpen(false)}
+                    className="flex items-baseline gap-4 py-5 font-heading text-5xl uppercase tracking-tight text-white-bg transition-colors hover:text-blue-main"
+                  >
+                    <span className="font-p text-[11px] tracking-[0.2em] text-blue-light">
+                      0{index + 1}
+                    </span>
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col gap-6">
               <button
-                onClick={() => {
-                  setFormShow(!isFormShowed);
-                  setMenuOpen(false);
-                }}
+                type="button"
+                onClick={openForm}
+                aria-haspopup="dialog"
+                className="w-full border border-white-bg bg-white-bg px-5 py-4 font-p text-xs uppercase tracking-[0.18em] text-ink transition-colors hover:bg-blue-deep hover:text-white"
               >
-                Let's Connect
+                Send a message
               </button>
-            </li>
-            <hr className="border-0 bg-white-bg h-px w-full z-50" />
-            <li className="font-p text-white-bg text-2xl">
-              <a
-                href="https://instagram.com/nibrasgazza"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Instagram
-              </a>
-            </li>
-            <li className="font-p text-white-bg text-2xl">
-              <a
-                href="https://linkedin.com/adil-nibras-gazza"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Linkedin
-              </a>
-            </li>
-          </ul>
+              <div className="flex gap-5 font-p text-sm">
+                <a
+                  href="https://instagram.com/nibrasgazza"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 transition-colors hover:text-white"
+                >
+                  Instagram
+                </a>
+                <a
+                  href="https://linkedin.com/in/adil-nibras-gazza"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/70 transition-colors hover:text-white"
+                >
+                  LinkedIn
+                </a>
+              </div>
+            </div>
+          </nav>
         </div>
       </header>
-    </div>
+
+      {isFormShowed && (
+        <Suspense fallback={null}>
+          <ConnectForm handleClose={() => setFormShow(false)} />
+        </Suspense>
+      )}
+    </>
   );
 }
