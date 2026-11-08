@@ -1,176 +1,253 @@
-import { useEffect, useState } from "react";
-
+import { useId, useState } from "react";
+import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
+import { useDialog } from "../../hooks/useDialog";
+import { getApiUrl } from "../../lib/api";
 interface FormProps {
-  handleClose: () => void;
+  handleClose?: () => void;
+  embedded?: boolean;
 }
 
-function StatusForm({ isVisible, isSuccess }: { isVisible: boolean; isSuccess: boolean }) {
-  return (
-    <div
-      className={`fixed top-6 left-1/2 -translate-x-1/2 z-70 flex items-center justify-center px-6 py-3 rounded-xl border text-lg font-p shadow-lg transition-all duration-300 ease-in-out ${
-        isVisible
-          ? "translate-y-0 opacity-100"
-          : "-translate-y-32 opacity-0 pointer-events-none"
-      } ${
-        isSuccess
-          ? "bg-blue-100 border-blue-dark text-blue-dark"
-          : "bg-red-100 border-red text-red"
-      }`}
-    >
-      <p>{isSuccess ? "Pengiriman Form Berhasil!" : "Pengiriman Form Gagal!"}</p>
-    </div>
-  );
+interface ToastState {
+  isVisible: boolean;
+  isSuccess: boolean;
+  message: string;
 }
 
-export default function ConnectForm({ handleClose }: FormProps) {
-  useEffect(() => {
-    const scrollY = window.scrollY;
-    document.body.style.position = "fixed";
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = "100%";
-    document.body.style.overflow = "hidden";
+const fieldClass =
+  "w-full border border-ink/20 bg-paper px-3 py-2.5 font-p text-sm text-ink placeholder:text-ink/65 transition-colors focus:border-blue-deep md:px-4 md:py-3 md:text-base";
 
-    return () => {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      document.body.style.width = "";
-      document.body.style.overflow = "";
-      window.scrollTo(0, scrollY);
-    };
-  }, []);
+const labelClass =
+  "font-p text-[11px] uppercase tracking-[0.16em] text-ink/70";
 
-  // State objek untuk mengatur visibilitas dan warna toast
-  const [toast, setToast] = useState({ isVisible: false, isSuccess: false });
-  const ACCESS_KEY = import.meta.env.VITE_WEB3FORM_ACCESS_KEY;
+export default function ConnectForm({
+  handleClose,
+  embedded = false,
+}: FormProps) {
+  const [toast, setToast] = useState<ToastState>({
+    isVisible: false,
+    isSuccess: false,
+    message: "",
+  });
+  const [isSending, setIsSending] = useState(false);
+  const titleId = useId();
+  const nameId = useId();
+  const emailId = useId();
+  const subjectId = useId();
+  const messageId = useId();
+
+  const closeForm = handleClose ?? (() => {});
+  useBodyScrollLock(!embedded);
+  const dialogRef = useDialog<HTMLFormElement>(closeForm);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
-    formData.append("access_key", ACCESS_KEY);
+
+    if (isSending) return;
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    setIsSending(true);
 
     try {
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const response = await fetch(getApiUrl("/api/contact"), {
         method: "POST",
-        body: formData,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.get("name"),
+          email: formData.get("email"),
+          subject: formData.get("subject"),
+          message: formData.get("message"),
+        }),
       });
 
       const data = await response.json();
+      const isSuccess = response.ok && Boolean(data.success);
 
-      setToast({ isVisible: true, isSuccess: data.success });
+      setToast({
+        isVisible: true,
+        isSuccess,
+        message: isSuccess
+          ? "Message sent. Thank you."
+          : response.status === 429
+            ? "You can only send one message per day."
+            : "A server error occurred. Please try again later.",
+      });
+
+      if (isSuccess) {
+        form.reset();
+      }
 
       setTimeout(() => {
         setToast((prev) => ({ ...prev, isVisible: false }));
 
-        setTimeout(() => {
-          handleClose();
-        }, 300);
+        if (isSuccess) {
+          setTimeout(closeForm, 300);
+        }
       }, 2500);
-
     } catch {
-      setToast({ isVisible: true, isSuccess: false });
-      
+      setToast({
+        isVisible: true,
+        isSuccess: false,
+        message: "A server error occurred. Please try again later.",
+      });
+
       setTimeout(() => {
         setToast((prev) => ({ ...prev, isVisible: false }));
       }, 2500);
+    } finally {
+      setIsSending(false);
     }
   };
 
   return (
     <>
-      <StatusForm isVisible={toast.isVisible} isSuccess={toast.isSuccess} />
+      <div
+        role="status"
+        aria-live="polite"
+        className={`fixed top-6 left-1/2 z-[95] flex -translate-x-1/2 items-center justify-center border px-5 py-3 font-p text-sm shadow-editorial-sm transition-all duration-300 ease-out ${
+          toast.isVisible
+            ? "translate-y-0 opacity-100"
+            : "-translate-y-24 opacity-0 pointer-events-none"
+        } ${
+          toast.isSuccess
+            ? "border-blue-deep bg-blue-soft text-blue-deep"
+            : "border-red-600 bg-red-50 text-red-700"
+        }`}
+      >
+        <p>
+          {toast.message}
+        </p>
+      </div>
 
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-sm z-60 flex items-center justify-center p-3 sm:p-8"
-        onClick={handleClose}
+        className={
+          embedded
+            ? "w-full"
+            : "fixed inset-0 z-[90] flex items-center justify-center bg-ink/80 p-3 sm:p-8"
+        }
+        onClick={embedded ? undefined : closeForm}
+        role={embedded ? undefined : "presentation"}
       >
         <form
+          ref={dialogRef}
+          role={embedded ? undefined : "dialog"}
+          aria-modal={embedded ? undefined : true}
+          aria-labelledby={titleId}
           onSubmit={handleSubmit}
-          className="relative w-full max-w-2xl h-full max-h-[90vh] overflow-y-auto overscroll-contain flex flex-col gap-2 md:gap-4 p-4 sm:p-4 md:p-6 bg-white-bg rounded-2xl"
-          onClick={(e) => e.stopPropagation()}
+          aria-busy={isSending}
+          className={`relative flex w-full flex-col gap-4 border border-ink bg-white-bg p-4 sm:p-6 md:gap-5 md:p-8 ${
+            embedded
+              ? "max-w-2xl"
+              : "max-h-[90vh] max-w-2xl overflow-y-auto overscroll-contain"
+          }`}
+          onClick={
+            embedded ? undefined : (event) => event.stopPropagation()
+          }
         >
-          <div className="flex justify-between">
-            <div className="flex flex-col">
-              <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl tracking-wide text-blue-main">
-                Let's Connect!
-              </h1>
-              <p className="font-p text-gray text-sm sm:text-base">
-                Send me email and let me help you!
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-p text-[11px] uppercase tracking-[0.2em] text-blue-deep">
+                Contact
+              </p>
+              <h2
+                id={titleId}
+                className="mt-2 font-heading text-3xl tracking-tight text-ink md:text-4xl"
+              >
+                SEND A MESSAGE
+              </h2>
+              <p className="mt-1 font-p text-sm text-ink/70">
+                Tell me what you are working on.
               </p>
             </div>
-            <button
-              type="button"
-              className="mr-4 text-2xl font-bold font-heading"
-              onClick={handleClose}
-            >
-              X
-            </button>
+            {!embedded && (
+              <button
+                type="button"
+                onClick={closeForm}
+                className="grid size-10 shrink-0 place-items-center border border-ink/20 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white-bg"
+                aria-label="Close contact form"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            )}
           </div>
 
-          <div className="flex flex-col md:flex-row gap-2 md:gap-4 w-full">
-            <div className="w-full flex flex-col gap-1">
-              <label
-                htmlFor="formName"
-                className="font-p text-blue-main text-xs md:text-[18px]"
-              >
+          <div className="flex w-full flex-col gap-4 md:flex-row">
+            <div className="flex w-full flex-col gap-2">
+              <label htmlFor={nameId} className={labelClass}>
                 Name
               </label>
               <input
-                className="rounded-2xl border border-blue-main focus:shadow-sm focus:shadow-blue-main/20 px-3 py-2 md:px-2 md:py-4 text-sm md:text-base"
+                id={nameId}
+                data-autofocus
+                className={fieldClass}
                 type="text"
-                placeholder="Your Name"
+                placeholder="Your name"
                 required
                 name="name"
-                id="formName"
+                autoComplete="name"
               />
             </div>
-            <div className="flex flex-col gap-1 w-full">
-              <label
-                htmlFor="formEmail"
-                className="font-p text-blue-main text-xs md:text-[18px]"
-              >
+            <div className="flex w-full flex-col gap-2">
+              <label htmlFor={emailId} className={labelClass}>
                 Email
               </label>
               <input
+                id={emailId}
                 type="email"
-                id="formEmail"
-                placeholder="example@email.com"
+                placeholder="you@example.com"
                 name="email"
                 required
-                className="rounded-2xl border border-blue-main focus:shadow-sm focus:shadow-blue-main/20 px-3 py-2 md:px-2 md:py-4 text-sm md:text-base"
+                autoComplete="email"
+                className={fieldClass}
               />
             </div>
           </div>
 
-          <div className="flex flex-col gap-1">
-            <label
-              htmlFor="formSubject"
-              className="font-p text-blue-main text-xs md:text-[18px]"
-            >
+          <div className="flex flex-col gap-2">
+            <label htmlFor={subjectId} className={labelClass}>
               Subject
             </label>
             <input
               type="text"
-              id="formSubject"
-              placeholder="Write the subject of your message"
+              id={subjectId}
+              placeholder="What is this about?"
               name="subject"
               required
-              className="rounded-2xl border border-blue-main focus:shadow-sm focus:shadow-blue-main/20 text-start px-3 py-2 md:px-2 md:py-4 text-sm md:text-base"
+              className={fieldClass}
             />
           </div>
 
-          <textarea
-            placeholder="Write your message here"
-            name="message"
-            required
-            className="rounded-2xl border border-blue-main focus:shadow-sm focus:shadow-blue-main/20 w-full min-h-32 md:min-h-40 flex-1 text-start px-3 py-2 md:px-2 md:py-4 text-sm md:text-base"
-          ></textarea>
+          <div className="flex flex-col gap-2">
+            <label htmlFor={messageId} className={labelClass}>
+              Message
+            </label>
+            <textarea
+              id={messageId}
+              placeholder="Write your message here"
+              name="message"
+              required
+              className={`${fieldClass} min-h-32 md:min-h-40`}
+            />
+          </div>
 
           <div className="flex w-full justify-end">
-            <input
+            <button
               type="submit"
-              value="Send"
-              className="w-full sm:w-auto sm:min-w-50 text-lg sm:text-2xl font-heading tracking-wide px-4 sm:px-2 py-3 sm:py-4 bg-blue-main rounded-2xl text-white cursor-pointer hover:bg-blue-dark transition"
-            />
+              disabled={isSending}
+              className="w-full border border-blue-deep bg-blue-deep px-5 py-3 font-p text-xs uppercase tracking-[0.18em] text-white transition-colors hover:border-ink hover:bg-ink disabled:opacity-60 sm:w-auto"
+            >
+              {isSending ? "Sending..." : "Send message"}
+            </button>
           </div>
         </form>
       </div>

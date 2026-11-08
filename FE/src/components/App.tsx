@@ -1,38 +1,41 @@
 import { lazy, Suspense } from "react";
 import { Analytics } from "@vercel/analytics/react";
-import { Navbar, Hero, Projects, MyTargets, Footer } from ".";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import {
+  AboutPage,
+  ChatbotPage,
+  ContactPage,
+  HomePage,
+  ProjectsPage,
+} from "../pages";
 
 const Intro = lazy(() => import("./sections/Intro").then((m) => ({ default: m.Intro })));
-const AIAssistantWidget = lazy(() =>
-  import("./widgets/AIAssistantWidget").then((m) => ({ default: m.AIAssistantWidget })),
-);
-
-function IntroFallback() {
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white-bg">
-      <div className="h-4 w-4 animate-pulse rounded-full bg-blue-main" />
-    </div>
-  );
-}
-
 function App() {
   return (
-    <>
-      <div className="">
-        <Suspense fallback={<IntroFallback />}>
-          <Intro />
-        </Suspense>
-        <Navbar />
-        <Hero />
-        <Projects />
-        <MyTargets />
-        <Footer />
-        <Suspense fallback={null}>
-          <AIAssistantWidget />
-        </Suspense>
-      </div>
+    <BrowserRouter>
+      <a
+        href="#main"
+        className="sr-only z-[110] border border-ink bg-white-bg px-4 py-3 font-p text-sm text-ink focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+      >
+        Skip to content
+      </a>
+
+      <Suspense fallback={null}>
+        <Intro />
+      </Suspense>
+
+      <main id="main">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/chatbot" element={<ChatbotPage />} />
+        </Routes>
+      </main>
+
       <Analytics />
-    </>
+    </BrowserRouter>
   );
 }
 

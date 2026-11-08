@@ -4,7 +4,7 @@ const env = require("../config/env");
 const limitMessage = {
   chatMessage : "Waduh, Nimo lagi males nihhh. Balik lagi nanti yak ><",
   globalMessage : "Error : Too Many Request",
-  emailMessage : "Kamu hanya bisa mengirim email 1X dalam Sehari"
+  contactMessage : "Kamu hanya bisa mengirim pesan 1X dalam sehari."
 }
 
 const chatLimiter = rateLimit({
@@ -23,12 +23,12 @@ const globalLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-const sendEmailLimiter = rateLimit({
-    windowMs: env.sendEmailLimit.windowMs,
-    max : env.sendEmailLimit.max,
-    message : {error : limitMessage.emailMessage},
+const contactLimiter = rateLimit({
+    windowMs: env.contactRateLimit.windowMs,
+    max : env.contactRateLimit.max,
+    message : { error : limitMessage.contactMessage },
     standardHeaders :  true,
     legacyHeaders : false
 })
 
-module.exports = { chatLimiter, globalLimiter, sendEmailLimiter };
+module.exports = { chatLimiter, globalLimiter, contactLimiter };
