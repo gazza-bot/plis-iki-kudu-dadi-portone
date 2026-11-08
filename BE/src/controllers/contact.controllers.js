@@ -2,34 +2,58 @@ const env = require("../config/env");
 
 async function postContact(req, res) {
   try {
-    const { name, email, subject, message } = req.body;
+    const { name, email, subject, message } = req.body || {};
 
     if (!name || !email || !subject || !message) {
       return res.status(400).json({ error: "Semua field wajib diisi." });
     }
 
-    const formData = new FormData();
-    formData.append("access_key", env.web3formsKey);
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("subject", subject);
-    formData.append("message", message);
-
-    const response = await fetch("https://api.web3forms.com/submit", {
+    const response = await fetch("https://api.resend.com/emails", {
       method: "POST",
-      body: formData,
+      headers: {
+        "Authorization": `Bearer ${env.resendApiKey}`,
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify({
+        from: env.contactFromEmail,
+        to: [env.contactToEmail],
+        reply_to: email,
+        subject,
+        text: [
+          `Name: ${name}`,
+          `Email: ${email}`,
+          "",
+          message,
+        ].join("\n"),
+      }),
     });
 
-    const data = await response.json();
+    const responseText = await response.text();
+    let data;
 
-    if (data.success) {
-      return res.json({ success: true });
+    try {
+      data = JSON.parse(responseText);
+    } catch {
+      console.error("Resend returned a non-JSON response.");
+      return res.status(502).json({
+        error: "Email provider returned an invalid response.",
+      });
     }
 
-    return res.status(502).json({ error: "Gagal mengirim pesan ke Web3Forms." });
+    if (response.ok && data.id) {
+      return res.status(200).json({ success: true, message: "Message sent." });
+    }
+
+    console.error("Resend contact delivery failed:", {
+      status: response.status,
+      message: data.message,
+    });
+    return res.status(502).json({ error: "Email delivery failed." });
+
   } catch (error) {
-    console.error("Error Contact Service", error);
-    res.status(500).json({ error: "Terjadi kesalahan pada server." });
+    console.error("Error Contact Service:", error);
+    return res.status(500).json({ error: "A server error occurred." });
   }
 }
 
