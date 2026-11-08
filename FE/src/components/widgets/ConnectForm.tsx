@@ -60,7 +60,15 @@ export default function ConnectForm({
         }),
       });
 
-      const data = await response.json();
+      const responseText = await response.text();
+      let data: { success?: boolean } = {};
+
+      try {
+        data = JSON.parse(responseText);
+      } catch {
+        // The API should return JSON, but proxies can return an HTML error page.
+      }
+
       const isSuccess = response.ok && Boolean(data.success);
 
       setToast({

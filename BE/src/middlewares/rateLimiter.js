@@ -26,6 +26,7 @@ const globalLimiter = rateLimit({
 const contactLimiter = rateLimit({
     windowMs: env.contactRateLimit.windowMs,
     max : env.contactRateLimit.max,
+    skipFailedRequests: true,
     message : { error : limitMessage.contactMessage },
     standardHeaders :  true,
     legacyHeaders : false
