@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import { Badge } from "../ui/Badge";
 import { useReveal } from "../../hooks/useReveal";
+import { getApiUrl } from "../../lib/api";
 
 const DetailsProject = lazy(() => import("../widgets/DetailsProject"));
 
@@ -60,8 +61,7 @@ function ProjectShowcase() {
     const fetchProjects = async () => {
       try {
         setIsLoading(true);
-        const API_URL = import.meta.env.VITE_BASE_URL;
-        const response = await fetch(`${API_URL}/api/projects`, {
+        const response = await fetch(getApiUrl("/api/projects"), {
           signal: controller.signal,
         });
 

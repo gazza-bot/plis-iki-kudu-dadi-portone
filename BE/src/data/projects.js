@@ -2,9 +2,9 @@ const projects = [
   {
     id: "1",
     judul: "Math Solver",
-    desc: "Membantu pengguna untuk memecahkan soal soal matematika, Cocok bagi Mahasiswa, Pelajar maupun Pengajar",
+    desc: "A practical math problem-solving tool for students, teachers, and anyone who wants to work through complex calculations.",
     descFull:
-      "Math Solver adalah aplikasi web yang aku bikin pakai React dan Tailwind karena aku emang suka banget sama matematika. Web ini sengaja dibuat buat bantu kamu mecahin berbagai soal matematika biar nggak bikin pusing. Fitur-fiturnya lumayan lengkap, mulai dari Kalkulator biasa buat ngitung, Ilustrator Grafik buat visualisasi, Kalkulator Matriks, sampai Kalkulator Statistika",
+      "Math Solver is a web application I built with React and Tailwind because I enjoy mathematics. It helps users solve a range of math problems through a collection of practical tools, including a standard calculator, graph visualizer, matrix calculator, and statistics calculator.",
     url: "https://res.cloudinary.com/gdee221i/image/upload/v1785941621/MathSolver_bfhtba.png",
     badgeText: ["React", "TypeScript", "Tailwind"],
     demoUrl: "https://math-solver-tawny.vercel.app/",
@@ -12,9 +12,9 @@ const projects = [
   {
     id: "2",
     judul: "Safely - Safe Navigation App",
-    desc: "High Fidelity Prototype Aplikasi Navigasi sekaligus pendeteksi lubang maupun kerusakan di jalan.",
+    desc: "A high-fidelity navigation prototype that helps detect potholes and other road damage.",
     descFull:
-      "Safely adalah prototype navigasi pintar berbasis Figma yang dirancang untuk membantu pengendara motor menghindari jalan berlubang. Prototype High-Fidelity ini mensimulasikan deteksi kerusakan jalan secara otomatis saat navigasi berlangsung, lengkap dengan peta peringatan real-time, pelaporan lubang otomatis, sistem poin reward, hingga pengaturan preferensi sensor dan jenis kendaraan.",
+      "Safely is a Figma-based smart navigation prototype designed to help motorcyclists avoid potholes. The high-fidelity prototype simulates automatic road damage detection during navigation, with a real-time warning map, automatic pothole reporting, a reward points system, and settings for sensor preferences and vehicle type.",
     url: "https://res.cloudinary.com/gdee221i/image/upload/f_auto,q_auto/Desain_tanpa_judul_wbfm9d",
     badgeText: ["UI/UX", "Figma"],
     demoUrl: "https://tinyurl.com/Safely-Prototype",
@@ -22,9 +22,9 @@ const projects = [
   {
     id: "3",
     judul: "Eternity Generation Landing Page",
-    desc: "Web Statis untuk menunjukkan profil Eternity Generation, Angkatan 10 PP. Darut Taqwa Ponorogo.",
+    desc: "A static website presenting the profile of Eternity Generation, Class 10 at PP. Darut Taqwa Ponorogo.",
     descFull:
-      "Landing Page Angkatan SMA ini adalah web statis yang aku bangun pakai React dan Tailwind khusus buat nyimpen memori-memori indah bareng temen-temen sekolah. Walaupun fiturnya simpel banget karena cuma ada galeri foto doang wkwk, tapi web ini berharga banget buat jadi tempat nostalgia dan mengenang keseruan masa-masa SMA dulu.",
+      "This high school class landing page is a static website I built with React and Tailwind to preserve memories with my classmates. Its main feature is a photo gallery that gives the class a simple place to look back on our time together.",
     url: "https://res.cloudinary.com/gdee221i/image/upload/v1785941499/EternityWebsite_zn8rbx.png",
     badgeText: ["React.js", "JavaScript"],
     demoUrl: "https://eternityspace.vercel.app/",

@@ -1,119 +1,309 @@
-import { GithubStats } from "../widgets/GithubStats";
-import tsLogo from "../../assets/ts_logo.svg";
-import reactIcon from "../../assets/React-icon.svg";
+import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Logo } from "../ui/Logo";
 
-const photoAing = "/PhotoAing.webp";
-
-const stack = ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express.js"];
+const launcherItems = [
+  {
+    label: "About Me",
+    eyebrow: "Frontend developer / UI designer",
+    description:
+      "I design and build web interfaces with a close eye on structure, motion, and the details people feel while using them.",
+    href: "/about",
+    icon: "profile",
+    image: "/aboutme.webp",
+    imagePosition: "center",
+    mobileImagePosition: "80% center",
+  },
+  {
+    label: "Projects",
+    eyebrow: "Selected work",
+    description:
+      "Browse real projects, from interface explorations to web experiences built with React and TypeScript.",
+    href: "/projects",
+    icon: "projects",
+    image: "/projects.webp",
+    imagePosition: "center",
+    mobileImagePosition: "70% center",
+  },
+  {
+    label: "Contact",
+    eyebrow: "Start a conversation",
+    description:
+      "Have a role, collaboration, or project in mind? Send me a message.",
+    href: "/contact",
+    icon: "contact",
+    image: "/message.webp",
+    imagePosition: "center",
+    mobileImagePosition: "68% center",
+  },
+  {
+    label: "Chatbot",
+    eyebrow: "Ask Nimo",
+    description:
+      "Ask about my work, skills, or the way I approach a project.",
+    href: "/chatbot",
+    icon: "chat",
+    image: "/chatbot.webp",
+    imagePosition: "center",
+    mobileImagePosition: "66% center",
+  },
+] as const;
 
 export function Hero() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const navigate = useNavigate();
+  const activeItem = launcherItems[activeIndex];
+
+  const moveLauncher = (direction: 1 | -1) => {
+    setActiveIndex((current) => {
+      const next = (current + direction + launcherItems.length) % launcherItems.length;
+      itemRefs.current[next]?.focus();
+      return next;
+    });
+  };
+
+  const openActiveLauncher = () => {
+    navigate(activeItem.href);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!["ArrowLeft", "ArrowRight"].includes(event.key)) return;
+      const target = event.target as HTMLElement | null;
+      if (
+        target?.closest(
+          "input, textarea, select, [contenteditable='true'], [role='dialog']",
+        )
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      setActiveIndex((current) => {
+        const next =
+          event.key === "ArrowRight"
+            ? (current + 1) % launcherItems.length
+            : (current - 1 + launcherItems.length) % launcherItems.length;
+        itemRefs.current[next]?.focus();
+        return next;
+      });
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
   return (
     <section
       id="about"
-      className="relative overflow-hidden border-b border-ink/10 bg-white-bg"
+      className="relative isolate flex h-dvh min-h-dvh overflow-hidden border-b border-white/10 bg-[#080611] text-white"
     >
-      <div className="mx-auto max-w-7xl px-5 pt-14 pb-16 md:px-8 md:pt-20 md:pb-24">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-7">
-            <p className="font-p text-[11px] uppercase tracking-[0.2em] text-blue-deep">
-              Portfolio / Information Technology
-            </p>
+      <img
+        key={activeItem.image}
+        src={activeItem.image}
+        alt=""
+        width={1376}
+        height={768}
+        fetchPriority="high"
+        decoding="async"
+        className="hero-background absolute inset-0 -z-20 h-full w-full animate-hero-image-enter object-cover opacity-55"
+        style={
+          {
+            "--hero-image-position": activeItem.imagePosition,
+            "--hero-image-position-mobile": activeItem.mobileImagePosition,
+          } as CSSProperties
+        }
+      />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,6,17,0.94)_0%,rgba(8,6,17,0.62)_45%,rgba(8,6,17,0.28)_72%,rgba(8,6,17,0.68)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(8,6,17,0.98)_0%,rgba(8,6,17,0.08)_48%,rgba(8,6,17,0.72)_100%)]" />
 
-            <h1 className="mt-5 font-heading text-[clamp(3.6rem,10vw,8.5rem)] leading-[0.82] tracking-tight text-ink">
-              ADIL NIBRAS <span className="text-blue-main">GAZZA</span>
-            </h1>
+      <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-between px-5 pb-8 pt-8 md:px-10 md:pb-10 md:pt-10 lg:px-14">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
+          <Link
+            to="/"
+            aria-label="Adildev home"
+            className="flex size-[84px] shrink-0 items-center justify-center border border-transparent"
+          >
+            <Logo
+              variant="LogoText"
+              classLogo="size-10 text-white"
+              classText="text-xl text-white"
+            />
+          </Link>
 
-            <p className="mt-5 font-p text-sm uppercase tracking-[0.18em] text-ink/70">
-              UI/UX Designer / Frontend Developer
-            </p>
-
-            <p className="mt-6 max-w-xl font-p text-lg leading-relaxed text-ink/75 md:text-xl">
-              I'm an Information Technology student at Universitas Brawijaya
-              with a strong enthusiasm for technology, currently focusing on web
-              development and joining competitions on campus. I enjoy building
-              things that are both functional and meaningful.
-            </p>
-
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href="#projects"
-                className="inline-flex items-center justify-center border border-ink bg-ink px-5 py-3 font-p text-xs uppercase tracking-[0.18em] text-white-bg transition-colors hover:border-blue-deep hover:bg-blue-deep"
+          <div
+            className="grid w-full max-w-[360px] grid-cols-4 gap-2 sm:w-[360px]"
+            aria-label="Home launcher items"
+          >
+            {launcherItems.map((item, index) => (
+              <button
+                key={item.label}
+                ref={(element) => {
+                  itemRefs.current[index] = element;
+                }}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                onFocus={() => setActiveIndex(index)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    navigate(item.href);
+                  }
+                }}
+                className={`group grid aspect-square w-full place-items-center border transition-all duration-200 ${
+                  activeIndex === index
+                    ? "scale-105 border-white bg-white text-ink shadow-[0_0_0_2px_rgba(255,255,255,0.25)]"
+                    : "border-white/10 bg-black/35 text-white/65 backdrop-blur-sm hover:border-white/60 hover:text-white"
+                }`}
+                aria-label={`Select ${item.label}`}
+                aria-pressed={activeIndex === index}
               >
-                See selected projects
-              </a>
-              <a
-                href="mailto:nibrasgazza@gmail.com"
-                className="inline-flex items-center justify-center border border-ink/25 px-5 py-3 font-p text-xs uppercase tracking-[0.18em] text-ink transition-colors hover:border-ink hover:bg-white"
-              >
-                Email Adil
-              </a>
-            </div>
-
-            <ul className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-t border-ink/15 pt-5 font-p text-[11px] uppercase tracking-[0.16em] text-ink/70">
-              {stack.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="lg:col-span-5">
-            <MyPhoto />
+                <LauncherIcon name={item.icon} />
+                <span className="sr-only">{item.label}</span>
+              </button>
+            ))}
           </div>
         </div>
 
-        <div className="mt-14 md:mt-20">
-          <GithubStats username="gazza-bot" />
+        <div className="grid min-h-[360px] gap-8 lg:grid-cols-[minmax(0,900px)_1fr] lg:items-end">
+          <div className="max-w-4xl self-end">
+            <p className="font-p text-xs uppercase tracking-[0.2em] text-white/55">
+              {activeItem.eyebrow}
+            </p>
+            <h1 className="mt-3 font-p text-[clamp(2.8rem,5vw,6rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-white lg:whitespace-nowrap">
+              {activeItem.label === "About Me" ? (
+                <>
+                  Adil Nibras
+                  {" "}
+                  <span className="text-blue-light">Gazza</span>
+                </>
+              ) : (
+                activeItem.label
+              )}
+            </h1>
+            <p className="mt-8 max-w-xl font-p text-sm leading-relaxed text-white/72 md:mt-10 md:text-base">
+              {activeItem.description}
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-3 md:mt-9">
+              {activeItem.label === "Chatbot" ? (
+                  <Link
+                    to="/chatbot"
+                    className="inline-flex min-h-11 items-center justify-center rounded-sm bg-white px-6 py-3 font-p text-xs font-semibold text-ink transition-colors hover:bg-blue-light"
+                  >
+                    Open chatbot
+                  </Link>
+              ) : (
+                  <Link
+                    to={activeItem.href}
+                    className="inline-flex min-h-11 items-center justify-center rounded-sm bg-white px-6 py-3 font-p text-xs font-semibold text-ink transition-colors hover:bg-blue-light"
+                  >
+                    {activeItem.label === "Contact"
+                      ? "Open contact"
+                      : `Open ${activeItem.label}`}
+                  </Link>
+              )}
+              <span className="inline-flex min-h-11 items-center rounded-sm border border-white/20 bg-black/25 px-5 py-3 font-p text-xs text-white/65 backdrop-blur-sm">
+                {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                {String(launcherItems.length).padStart(2, "0")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-4 border-t border-white/15 pt-4 font-p text-[11px] text-white/55 md:mt-6">
+          <div className="hidden flex-wrap items-center gap-x-6 gap-y-3 sm:flex">
+            <span>
+              <kbd className="mr-2 rounded border border-white/20 px-2 py-1 text-white">
+                ←
+              </kbd>
+              <kbd className="mr-2 rounded border border-white/20 px-2 py-1 text-white">
+                →
+              </kbd>
+              Navigate
+            </span>
+            <span>
+              <kbd className="mr-2 rounded border border-white/20 px-2 py-1 text-white">
+                Enter
+              </kbd>
+              Open selection
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 sm:hidden">
+            <button
+              type="button"
+              onClick={() => moveLauncher(-1)}
+              className="grid min-h-11 min-w-11 place-items-center rounded-sm border border-white/20 bg-white/10 px-3 text-lg text-white transition-colors hover:bg-white hover:text-ink"
+              aria-label="Previous launcher"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => moveLauncher(1)}
+              className="grid min-h-11 min-w-11 place-items-center rounded-sm border border-white/20 bg-white/10 px-3 text-lg text-white transition-colors hover:bg-white hover:text-ink"
+              aria-label="Next launcher"
+            >
+              →
+            </button>
+            <button
+              type="button"
+              onClick={openActiveLauncher}
+              className="ml-5 min-h-11 rounded-sm border border-white/20 bg-white/10 px-5 font-semibold text-white transition-colors hover:bg-white hover:text-ink"
+            >
+              Enter
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
 
-function MyPhoto() {
+function LauncherIcon({ name }: { name: (typeof launcherItems)[number]["icon"] }) {
+  if (name === "profile") {
+    return (
+      <svg viewBox="0 0 24 24" className="size-8" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <circle cx="12" cy="8" r="3.5" />
+        <path d="M5 20c.8-3.3 3.1-5 7-5s6.2 1.7 7 5" />
+      </svg>
+    );
+  }
+
+  if (name === "projects") {
+    return (
+      <svg viewBox="0 0 24 24" className="size-8" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+        <rect x="4" y="4" width="6" height="6" />
+        <rect x="14" y="4" width="6" height="6" />
+        <rect x="4" y="14" width="6" height="6" />
+        <rect x="14" y="14" width="6" height="6" />
+      </svg>
+    );
+  }
+
+  if (name === "chat") {
+    return (
+      <svg
+        viewBox="0 0 24 24"
+        className="size-8"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        aria-hidden="true"
+      >
+        <path d="M5 6.5A2.5 2.5 0 0 1 7.5 4h9A2.5 2.5 0 0 1 19 6.5v6a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4.2A2.5 2.5 0 0 1 5 12.5v-6Z" />
+        <path d="M9 9.5h6M9 12h3" />
+      </svg>
+    );
+  }
+
   return (
-    <div className="relative mx-auto w-full max-w-sm lg:ml-auto">
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-        <svg
-          viewBox="0 0 382 556"
-          fill="currentColor"
-          className="h-[105%] w-[115%] text-blue-main/15"
-          aria-hidden="true"
-        >
-          <path d="M25.1982 312.895C106.198 65.8949 103.198 11.8947 157.198 126.895C211.198 241.895 214.698 296.395 319.698 160.895C424.698 25.3946 197.699 -160.605 319.698 258.895C441.698 678.395 367.198 62.3951 221.698 370.395C76.198 678.395 -55.8018 559.895 25.1982 312.895Z" />
-        </svg>
-      </div>
-
-      <div className="relative z-10 border border-ink bg-paper p-2 shadow-editorial">
-        <img
-          src={photoAing}
-          alt="Adil Nibras Gazza"
-          width={768}
-          height={1152}
-          fetchPriority="high"
-          decoding="async"
-          className="aspect-[3/4] w-full bg-white-bg object-cover"
-        />
-      </div>
-
-      <div className="absolute top-8 -left-4 z-20 flex size-14 -rotate-6 items-center justify-center border border-ink bg-white-bg p-3 shadow-editorial-sm">
-        <img
-          src={tsLogo}
-          alt="TypeScript"
-          width={48}
-          height={48}
-          className="size-full"
-        />
-      </div>
-
-      <div className="absolute -right-4 bottom-10 z-20 flex size-16 rotate-6 items-center justify-center border border-ink bg-white-bg p-3 shadow-editorial-sm">
-        <img
-          src={reactIcon}
-          alt="React"
-          width={64}
-          height={64}
-          className="size-full"
-        />
-      </div>
-    </div>
+    <svg viewBox="0 0 24 24" className="size-8" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+      <path d="M4 6.5 12 12l8-5.5" />
+      <rect x="4" y="5" width="16" height="14" rx="1.5" />
+    </svg>
   );
 }

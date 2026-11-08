@@ -98,7 +98,7 @@ export function Intro() {
     >
       {/* Screen 1: Name */}
       <div
-        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-blue-deep transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-[#07111f] transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
           step >= 2 ? "-translate-x-full" : "translate-x-0"
         }`}
         style={{ willChange: "transform" }}
@@ -110,7 +110,7 @@ export function Intro() {
 
       {/* Screen 2: Titles */}
       <div
-        className={`absolute inset-0 flex h-dvh w-full flex-col items-center justify-center gap-2 bg-white-bg px-5 text-center transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+        className={`absolute inset-0 flex h-dvh w-full flex-col items-center justify-center gap-2 bg-[#10243c] px-5 text-center transition-transform duration-600 ease-[cubic-bezier(0.77,0,0.175,1)] ${
           step < 2
             ? "translate-x-full"
             : step >= 3
@@ -119,10 +119,10 @@ export function Intro() {
         }`}
         style={{ willChange: "transform" }}
       >
-        <p className="font-heading text-4xl tracking-wide text-ink md:text-8xl">
+        <p         className="font-heading text-4xl tracking-wide text-white-bg md:text-8xl">
           Tech Enthusiast
         </p>
-        <p className="font-heading text-4xl tracking-wide text-ink md:text-8xl">
+        <p         className="font-heading text-4xl tracking-wide text-white-bg md:text-8xl">
           Frontend Developer
         </p>
         <p className="font-heading text-4xl tracking-wide text-blue-main md:text-8xl">
@@ -132,15 +132,15 @@ export function Intro() {
 
       {/* Screen 3: Logo */}
       <div
-        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-white-bg transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.175,1)] ${
+        className={`absolute inset-0 flex h-dvh w-full items-center justify-center bg-[#07111f] transition-transform duration-500 ease-[cubic-bezier(0.77,0,0.175,1)] ${
           step < 3 ? "translate-y-full" : "translate-y-0"
         }`}
         style={{ willChange: "transform" }}
       >
         <Logo
           variant="LogoText"
-          classLogo="size-20 text-ink md:size-48"
-          classText="text-7xl text-ink md:text-[180px]"
+          classLogo="size-20 text-white-bg md:size-48"
+          classText="text-7xl text-white-bg md:text-[180px]"
         />
       </div>
 

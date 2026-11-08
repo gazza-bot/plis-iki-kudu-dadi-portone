@@ -1,13 +1,16 @@
 import { useId, useState } from "react";
 import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 import { useDialog } from "../../hooks/useDialog";
+import { getApiUrl } from "../../lib/api";
 interface FormProps {
-  handleClose: () => void;
+  handleClose?: () => void;
+  embedded?: boolean;
 }
 
 interface ToastState {
   isVisible: boolean;
   isSuccess: boolean;
+  message: string;
 }
 
 const fieldClass =
@@ -16,10 +19,14 @@ const fieldClass =
 const labelClass =
   "font-p text-[11px] uppercase tracking-[0.16em] text-ink/70";
 
-export default function ConnectForm({ handleClose }: FormProps) {
+export default function ConnectForm({
+  handleClose,
+  embedded = false,
+}: FormProps) {
   const [toast, setToast] = useState<ToastState>({
     isVisible: false,
     isSuccess: false,
+    message: "",
   });
   const [isSending, setIsSending] = useState(false);
   const titleId = useId();
@@ -28,8 +35,9 @@ export default function ConnectForm({ handleClose }: FormProps) {
   const subjectId = useId();
   const messageId = useId();
 
-  useBodyScrollLock(true);
-  const dialogRef = useDialog<HTMLFormElement>(handleClose);
+  const closeForm = handleClose ?? (() => {});
+  useBodyScrollLock(!embedded);
+  const dialogRef = useDialog<HTMLFormElement>(closeForm);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -38,12 +46,10 @@ export default function ConnectForm({ handleClose }: FormProps) {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
-
     setIsSending(true);
 
     try {
-      const response = await fetch(`${BASE_URL}/api/contact`, {
+      const response = await fetch(getApiUrl("/api/contact"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -57,7 +63,15 @@ export default function ConnectForm({ handleClose }: FormProps) {
       const data = await response.json();
       const isSuccess = response.ok && Boolean(data.success);
 
-      setToast({ isVisible: true, isSuccess });
+      setToast({
+        isVisible: true,
+        isSuccess,
+        message: isSuccess
+          ? "Message sent. Thank you."
+          : response.status === 429
+            ? "You can only send one message per day."
+            : "A server error occurred. Please try again later.",
+      });
 
       if (isSuccess) {
         form.reset();
@@ -67,11 +81,15 @@ export default function ConnectForm({ handleClose }: FormProps) {
         setToast((prev) => ({ ...prev, isVisible: false }));
 
         if (isSuccess) {
-          setTimeout(handleClose, 300);
+          setTimeout(closeForm, 300);
         }
       }, 2500);
     } catch {
-      setToast({ isVisible: true, isSuccess: false });
+      setToast({
+        isVisible: true,
+        isSuccess: false,
+        message: "A server error occurred. Please try again later.",
+      });
 
       setTimeout(() => {
         setToast((prev) => ({ ...prev, isVisible: false }));
@@ -97,26 +115,34 @@ export default function ConnectForm({ handleClose }: FormProps) {
         }`}
       >
         <p>
-          {toast.isSuccess
-            ? "Message sent. Thank you."
-            : "Message could not be sent. Please try again."}
+          {toast.message}
         </p>
       </div>
 
       <div
-        className="fixed inset-0 z-[90] flex items-center justify-center bg-ink/80 p-3 sm:p-8"
-        onClick={handleClose}
-        role="presentation"
+        className={
+          embedded
+            ? "w-full"
+            : "fixed inset-0 z-[90] flex items-center justify-center bg-ink/80 p-3 sm:p-8"
+        }
+        onClick={embedded ? undefined : closeForm}
+        role={embedded ? undefined : "presentation"}
       >
         <form
           ref={dialogRef}
-          role="dialog"
-          aria-modal="true"
+          role={embedded ? undefined : "dialog"}
+          aria-modal={embedded ? undefined : true}
           aria-labelledby={titleId}
           onSubmit={handleSubmit}
           aria-busy={isSending}
-          className="relative flex max-h-[90vh] w-full max-w-2xl flex-col gap-4 overflow-y-auto overscroll-contain border border-ink bg-white-bg p-4 sm:p-6 md:gap-5 md:p-8"
-          onClick={(event) => event.stopPropagation()}
+          className={`relative flex w-full flex-col gap-4 border border-ink bg-white-bg p-4 sm:p-6 md:gap-5 md:p-8 ${
+            embedded
+              ? "max-w-2xl"
+              : "max-h-[90vh] max-w-2xl overflow-y-auto overscroll-contain"
+          }`}
+          onClick={
+            embedded ? undefined : (event) => event.stopPropagation()
+          }
         >
           <div className="flex items-start justify-between gap-4">
             <div>
@@ -133,24 +159,26 @@ export default function ConnectForm({ handleClose }: FormProps) {
                 Tell me what you are working on.
               </p>
             </div>
-            <button
-              type="button"
-              onClick={handleClose}
-              className="grid size-10 shrink-0 place-items-center border border-ink/20 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white-bg"
-              aria-label="Close contact form"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                aria-hidden="true"
+            {!embedded && (
+              <button
+                type="button"
+                onClick={closeForm}
+                className="grid size-10 shrink-0 place-items-center border border-ink/20 text-ink transition-colors hover:border-ink hover:bg-ink hover:text-white-bg"
+                aria-label="Close contact form"
               >
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
-            </button>
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  aria-hidden="true"
+                >
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </button>
+            )}
           </div>
 
           <div className="flex w-full flex-col gap-4 md:flex-row">

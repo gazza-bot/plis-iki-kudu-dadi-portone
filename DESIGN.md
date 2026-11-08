@@ -2,13 +2,13 @@
 
 ## Direction
 
-Personal portfolio for recruiters and collaborators in frontend and UI/UX. Editorial-bold visual language with a blue identity, built around typography, rules, and asymmetric composition instead of cards and soft shadows.
+Personal portfolio for recruiters and collaborators in frontend and UI/UX. Launcher-style home-shell language with a near-black canvas, blue atmospheric lighting, full-bleed media, compact item navigation, and a selected-content panel. This is an interaction reference, not a visual clone.
 
-Dial: ENERGY 3 / RHYTHM 3 / MOTION 2.
+Dial: ENERGY 3 / RHYTHM 2 / MOTION 2.
 
-- ENERGY 3: oversized display type, strong contrast between sections, visible personality.
-- RHYTHM 3: every section has a different composition. No repeated centered title plus grid pattern.
-- MOTION 2: purposeful scroll reveals and hover transitions. No infinite decorative motion.
+- ENERGY 3: a strong opening screen with full-bleed media, high contrast, and a focused selection.
+- RHYTHM 2: the home screen uses a launcher rail and lower-left content panel, while deeper sections keep their editorial contrast.
+- MOTION 2: focus movement, hover transitions, and purposeful reveal states. No infinite decorative motion.
 
 ## Identity motif
 
@@ -37,16 +37,14 @@ Reason: two core colors (ink, off-white) plus one accent (blue). `blue-deep` exi
 
 - Surfaces and media: sharp or 2px radius. Editorial layout should feel printed, not soft.
 - Buttons and inputs: 2px radius.
-- Avatars and the floating assistant button: full round, because they represent compact circular objects.
+- Avatars: full round, because they represent compact circular objects.
 - Shadows: solid offset shadows for focal elements only (hero portrait, featured project, assistant panel). No soft shadow on every component.
 
 ## Layout
 
-- Hero: asymmetric, text-led, portrait on the right with the blob motif.
-- Projects: one featured project plus editorial rows with index numbers.
-- My Targets: large statement plus a numbered principles list.
-- Footer: oversized wordmark and a plain contact list.
-- Whitespace separates sections by different amounts on purpose. No alternating background-only rhythm.
+- Home: a single fullscreen launcher shell with a compact icon rail, full-bleed media, lower-left selected content, one contextual CTA, and keyboard hints.
+- Destination pages: Projects, About Me, and Contact reuse the launcher visual language while giving each action a real page.
+- The home rail uses tiles because the user asked for a console-home interaction. The rail changes Hero state only; the CTA performs navigation.
 
 ## Content rules
 
@@ -54,3 +52,14 @@ Reason: two core colors (ink, off-white) plus one accent (blue). `blue-deep` exi
 - No fabricated testimonials, statistics, or claims.
 - Placeholders must be labeled as placeholders.
 - Copy uses no em dash.
+
+## Decision reasons
+
+- Near-black background with blue light: matches the project page identity while keeping the content readable.
+- Compact icon rail: makes destinations browseable without turning the homepage into a card grid.
+- Full-bleed portrait: uses an existing real asset as the atmosphere and introduces the person before the copy.
+- White active selection with blue emphasis: makes focus state legible against the dark media without coloring every control.
+- Chatbot launcher: routes to a dedicated Nimo chat room instead of opening a floating widget, keeping the home screen focused and giving the conversation enough space to breathe.
+- React Router destinations: make each launcher action a real page instead of a dead control or scroll-only illusion.
+- Existing Bebas Neue and Plus Jakarta Sans: preserve the portfolio's recognizable voice while improving contrast against the darker shell.
+- Shared destination shell: keep the Back to home control, dark canvas, sharp borders, and blue emphasis consistent across every route.

@@ -2,7 +2,12 @@ const dotenv = require("dotenv")
 
 dotenv.config()
 
-const requiredEnvVars = ["GEMINI_API_KEY", "GEMINI_MODEL", "WEB3FORMS_ACCESS_KEY"];
+const requiredEnvVars = [
+    "GEMINI_API_KEY",
+    "GEMINI_MODEL",
+    "WEB3FORMS_ACCESS_KEY",
+    "CORS_ORIGIN"
+];
 
 const missing = requiredEnvVars.filter((envKey) => !process.env[envKey])
 
@@ -14,7 +19,7 @@ const env = {
     port : process.env.PORT || 5000,
     geminiApiKey : process.env.GEMINI_API_KEY,
     geminiModel : process.env.GEMINI_MODEL,
-    corsOrigin : process.env.CORS_ORIGIN || "*",
+    corsOrigin : process.env.CORS_ORIGIN.trim(),
     web3formsKey : process.env.WEB3FORMS_ACCESS_KEY,
     chatRateLimit : {
         windowMs : 15 * 60 * 1000,
