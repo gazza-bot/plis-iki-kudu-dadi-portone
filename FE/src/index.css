@@ -136,19 +136,33 @@
       filter: brightness(0.82);
     }
     45% {
-      opacity: 0.55;
+      opacity: 0.9;
       transform: scale(1);
-      filter: brightness(1.08);
+      filter: brightness(1.2);
     }
     100% {
-      opacity: 0.55;
+      opacity: 0.9;
       transform: scale(1);
-      filter: brightness(1);
+      filter: brightness(1.15) contrast(1.03);
     }
   }
 
   .animate-hero-image-enter {
     animation: hero-image-enter 700ms ease-out both;
+  }
+
+  @keyframes aura-breathe {
+    0%,
+    100% {
+      opacity: 0.35;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+
+  .animate-aura-breathe {
+    animation: aura-breathe 4.5s ease-in-out infinite;
   }
 
   .hero-background {

@@ -108,16 +108,51 @@ export function Hero() {
         height={768}
         fetchPriority="high"
         decoding="async"
-        className="hero-background absolute inset-0 -z-20 h-full w-full animate-hero-image-enter object-cover opacity-55"
+        className="hero-background absolute inset-0 -z-20 h-full w-full animate-hero-image-enter object-cover opacity-90"
         style={
           {
             "--hero-image-position": activeItem.imagePosition,
             "--hero-image-position-mobile": activeItem.mobileImagePosition,
+            filter: "brightness(1.15) contrast(1.03)",
           } as CSSProperties
         }
       />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,6,17,0.94)_0%,rgba(8,6,17,0.62)_45%,rgba(8,6,17,0.28)_72%,rgba(8,6,17,0.68)_100%)]" />
-      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(8,6,17,0.98)_0%,rgba(8,6,17,0.08)_48%,rgba(8,6,17,0.72)_100%)]" />
+
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-[19] opacity-75 blur-2xl"
+        style={{
+          background:
+            "radial-gradient(ellipse 48% 66% at 76% 50%, rgba(33,133,213,0.55) 0%, rgba(33,133,213,0.22) 42%, rgba(33,133,213,0) 72%)",
+        }}
+      />
+
+      <img
+        key={`${activeItem.image}-aura`}
+        src={activeItem.image}
+        alt=""
+        width={1376}
+        height={768}
+        decoding="async"
+        aria-hidden="true"
+        className="hero-background animate-aura-breathe pointer-events-none absolute inset-0 -z-[18] h-full w-full object-cover"
+        style={
+          {
+            "--hero-image-position": activeItem.imagePosition,
+            "--hero-image-position-mobile": activeItem.mobileImagePosition,
+            filter: "blur(20px) brightness(2.1) saturate(1.15)",
+            maskImage:
+              "radial-gradient(ellipse 34% 58% at 76% 50%, black 0%, black 42%, transparent 76%)",
+            WebkitMaskImage:
+              "radial-gradient(ellipse 34% 58% at 76% 50%, black 0%, black 42%, transparent 76%)",
+            mixBlendMode: "screen",
+            opacity: 0.45,
+          } as CSSProperties
+        }
+      />
+
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(90deg,rgba(8,6,17,0.78)_0%,rgba(8,6,17,0.42)_45%,rgba(8,6,17,0.14)_72%,rgba(8,6,17,0.32)_100%)]" />
+      <div className="absolute inset-0 -z-10 bg-[linear-gradient(0deg,rgba(8,6,17,0.55)_0%,rgba(8,6,17,0.04)_48%,rgba(8,6,17,0.30)_100%)]" />
 
       <div className="mx-auto flex w-full max-w-[1600px] flex-1 flex-col justify-between px-5 pb-8 pt-8 md:px-10 md:pb-10 md:pt-10 lg:px-14">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
